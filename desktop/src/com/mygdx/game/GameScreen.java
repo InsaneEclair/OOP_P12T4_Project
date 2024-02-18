@@ -46,24 +46,15 @@ public class GameScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
         
         game.batch.begin();
-        // Calculate the scale factor to stretch the image across the screen width
-        // This assumes all backgrounds are the same size, so we use backgrounds[0] to calculate
         float scaleFactor = camera.viewportWidth / (backgrounds[0].getWidth());
-
-        // Use this scaleFactor to scale both the width and the height to maintain the aspect ratio
         float scaledHeight = backgrounds[0].getHeight() * (2*scaleFactor);
 
         // Draw and update backgrounds
         for (int i = 0; i < backgrounds.length; i++) {
-            // Check if the background needs to be looped to the other side
             if (backgroundOffset[i] + backgrounds[i].getWidth() * scaleFactor <= 0) {
                 backgroundOffset[i] += backgrounds[i].getWidth() * scaleFactor * backgrounds.length;
             }
-
-            // Draw the background image with the scaled width and height
             game.batch.draw(backgrounds[i], backgroundOffset[i], 0, backgrounds[i].getWidth() * scaleFactor, scaledHeight);
-
-            // Update the background offset
             backgroundOffset[i] -= MOVEMENT * delta;
         }
         game.batch.draw(dinosaur.texture, dinosaur.position.x, dinosaur.position.y);
@@ -78,7 +69,6 @@ public class GameScreen implements Screen {
         camera.viewportHeight = height;
         camera.update();
 
-        // We may need to recalculate the offsets for the backgrounds if the screen size changes
         for (int i = 0; i < backgrounds.length; i++) {
             backgroundOffset[i] = camera.viewportWidth * i;
         }
