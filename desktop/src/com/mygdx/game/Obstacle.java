@@ -10,7 +10,7 @@ public class Obstacle {
     public Rectangle bounds;
 
     public Obstacle(float x, float y) {
-        texture = new Texture("obstacle.png"); // Make sure you have this texture in your assets
+        texture = new Texture("cactus1.png"); // Make sure you have this texture in your assets
         position = new Vector2(x, y);
         bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
     }
