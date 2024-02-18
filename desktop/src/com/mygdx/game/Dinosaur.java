@@ -35,6 +35,8 @@ public class Dinosaur {
         bounds.setPosition(position.x, position.y);
     }
 
+    
+    //test push	
     public void jump() {
         if (position.y == 0) { // Simple check to prevent double jumping
             velocity.y = 100; // Adjust the jump height as needed
