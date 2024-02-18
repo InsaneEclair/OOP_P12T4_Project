@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
 public class GameScreen implements Screen {
-	private static final int MOVEMENT = 100; // Increase the speed from 100 to 150
+	private static final int MOVEMENT = 100;
 	final GameEngine game;
     OrthographicCamera camera;
     Dinosaur dinosaur;
@@ -41,8 +41,13 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             dinosaur.jump();
         }
-        dinosaur.update(delta);
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            dinosaur.duck();
+        } else {
+            dinosaur.standUp();
+        }
 
+        dinosaur.update(delta);
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
         
@@ -58,11 +63,13 @@ public class GameScreen implements Screen {
             game.batch.draw(backgrounds[i], backgroundOffset[i], 0, backgrounds[i].getWidth() * scaleFactor, scaledHeight);
             backgroundOffset[i] -= MOVEMENT * delta;
         }
-        game.batch.draw(dinosaur.texture, dinosaur.position.x, dinosaur.position.y);
+
+        game.batch.draw(dinosaur.getTexture(), dinosaur.position.x, dinosaur.position.y);
         game.batch.end();
 
         Gdx.app.log("Dinosaur Position", dinosaur.position.toString());
     }
+
 
     @Override
     public void resize(int width, int height) {
