@@ -47,15 +47,16 @@ public class GameScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
         
         game.batch.begin();
+        float scaleFactor = camera.viewportWidth / (backgrounds[0].getWidth());
+        float scaledHeight = backgrounds[0].getHeight() * (2*scaleFactor);
+
+        // Draw and update backgrounds
         for (int i = 0; i < backgrounds.length; i++) {
-            backgroundOffset[i] += MOVEMENT * delta;
-            if (backgroundOffset[i] > camera.viewportWidth) {
-                backgroundOffset[i] -= camera.viewportWidth * backgrounds.length;
+            if (backgroundOffset[i] + backgrounds[i].getWidth() * scaleFactor <= 0) {
+                backgroundOffset[i] += backgrounds[i].getWidth() * scaleFactor * backgrounds.length;
             }
-            game.batch.draw(backgrounds[i], backgroundOffset[i], 0, camera.viewportWidth, camera.viewportHeight);
-            if (backgroundOffset[i] < camera.viewportWidth) {
-                game.batch.draw(backgrounds[i], backgroundOffset[i] + camera.viewportWidth * backgrounds.length, 0, camera.viewportWidth, camera.viewportHeight);
-            }
+            game.batch.draw(backgrounds[i], backgroundOffset[i], 0, backgrounds[i].getWidth() * scaleFactor, scaledHeight);
+            backgroundOffset[i] -= MOVEMENT * delta;
         }
         game.batch.draw(dinosaur.texture, dinosaur.position.x, dinosaur.position.y);
         game.batch.end();
@@ -68,7 +69,12 @@ public class GameScreen implements Screen {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
         camera.update();
+
+        for (int i = 0; i < backgrounds.length; i++) {
+            backgroundOffset[i] = camera.viewportWidth * i;
+        }
     }
+
 
     @Override
     public void show() {
