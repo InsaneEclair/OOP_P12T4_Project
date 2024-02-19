@@ -13,8 +13,8 @@ import java.util.Iterator;
 import java.util.Random;
 
 public class GameScreen implements Screen {
-	private static final int MOVEMENT = 100;
-	private final GameEngine game;
+    private static final int MOVEMENT = 100;
+    private final GameEngine game;
     private final SpriteBatch batch;
     private OrthographicCamera camera;
     private Dinosaur dinosaur;
@@ -42,7 +42,7 @@ public class GameScreen implements Screen {
         backgrounds[1] = new Texture(Gdx.files.internal("land2.png"));
         backgrounds[2] = new Texture(Gdx.files.internal("land3.png"));
         backgroundOffset = new float[backgrounds.length];
-        
+
         for (int i = 0; i < backgrounds.length; i++) {
             backgroundOffset[i] = -i * camera.viewportWidth;
         }
@@ -98,7 +98,7 @@ public class GameScreen implements Screen {
                     newObstacle = new Cactus(camera.viewportWidth, groundYPosition, textureName);
                 } else {
                     // Create a cloud obstacle
-                    newObstacle = new Cloud(camera.viewportWidth, airYPosition);
+                    newObstacle = new Cloud(camera.viewportWidth, Gdx.graphics.getHeight() - 100); // Adjusted y-position
                 }
                 obstacles.add(newObstacle);
                 timeSinceLastObstacle = 0;
@@ -132,7 +132,7 @@ public class GameScreen implements Screen {
             return 0; // Ground obstacle
         } else if ("cactus2.png".equals(textureName)) {
             return 0; // Ground Obstacle
-        } else if ("cloud.png".equals(textureName)) {
+        } else if ("cloud.jpg".equals(textureName)) {
             return 25; // Air Obstacle
         }
         return 0; // Default ground position
@@ -184,7 +184,7 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         // Dispose of game resources
-    	dinosaur.dispose();
+        dinosaur.dispose();
         for (Texture background : backgrounds) {
             background.dispose();
         }

@@ -27,6 +27,7 @@ public class Dinosaur {
         texture = standingTexture; // Default to standing texture
         bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
         jumpSound = Gdx.audio.newSound(Gdx.files.internal("jump1.wav"));
+
     }
 
     public void update(float dt) {
