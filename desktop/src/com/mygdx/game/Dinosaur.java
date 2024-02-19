@@ -12,7 +12,7 @@ public class Dinosaur {
     public Texture duckingTexture; //  When ducking
     public Vector2 position;
     public Vector2 velocity;
-    private static final int GRAVITY = -1000;
+    private static final int GRAVITY = -800;
     private static final int MOVEMENT =0;
     public Rectangle bounds;
     public Sound jumpSound;
