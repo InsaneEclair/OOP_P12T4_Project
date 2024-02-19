@@ -29,6 +29,7 @@ public class GameScreen implements Screen {
     private String[] obstacleTextures = new String[]{"cactus1.png", "cactus2.png"};
     private static final float groundYPosition = 0;
     private static final float airYPosition = 25;
+    //private CollisionManager collisionManager;
 
     public GameScreen(final GameEngine game, SpriteBatch batch) {
         this.game = game;
@@ -52,6 +53,8 @@ public class GameScreen implements Screen {
         minTimeBetweenObstacles = 1.0f; // Minimum time in seconds until the next obstacle spawns
         maxTimeBetweenObstacles = 3.0f; // Maximum time in seconds until the next obstacle spawns
         timeUntilNextObstacle = getRandomSpawnTime();
+
+        //collisionManager = new CollisionManager(dinosaur, obstacles);
     }
 
     @Override
@@ -121,6 +124,9 @@ public class GameScreen implements Screen {
 
             Gdx.app.log("Dinosaur Position", dinosaur.position.toString());
         }
+
+        // Check for collisions
+        //collisionManager.checkCollision();
     }
 
     private float getRandomSpawnTime() {

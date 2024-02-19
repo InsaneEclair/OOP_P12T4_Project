@@ -71,6 +71,7 @@ public class Dinosaur {
         return texture;
     }
 
+    //public Rectangle getBounds(){return bounds;}
     public void dispose() {
         texture.dispose();
     }
