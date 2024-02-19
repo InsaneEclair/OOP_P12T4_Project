@@ -29,7 +29,7 @@ public class GameScreen implements Screen {
     private String[] obstacleTextures = new String[]{"cactus1.png", "cactus2.png"};
     private static final float groundYPosition = 0;
     private static final float airYPosition = 25;
-    //private CollisionManager collisionManager;
+    private CollisionManager collisionManager;
     private PlayerController playerController;
     private SoundManager soundManager;
 
@@ -59,7 +59,7 @@ public class GameScreen implements Screen {
         maxTimeBetweenObstacles = 3.0f; // Maximum time in seconds until the next obstacle spawns
         timeUntilNextObstacle = getRandomSpawnTime();
 
-        //collisionManager = new CollisionManager(dinosaur, obstacles);
+        collisionManager = new CollisionManager(dinosaur, obstacles);
     }
 
     @Override
@@ -124,7 +124,9 @@ public class GameScreen implements Screen {
         }
 
         // Check for collisions
-        //collisionManager.checkCollision();
+        if(collisionManager.checkCollision()){
+            collisionManager.stopGame();
+        }
     }
 
 

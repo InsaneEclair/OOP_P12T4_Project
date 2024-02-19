@@ -25,9 +25,9 @@ public class EntityManager {
         bounds.setPosition(position.x, position.y);
     }
 
-    //public Rectangle getBounds() {
-      //  return bounds;
-    //}
+    public Rectangle getBounds() {
+        return bounds;
+    }
     public void dispose() {
         texture.dispose();
     }

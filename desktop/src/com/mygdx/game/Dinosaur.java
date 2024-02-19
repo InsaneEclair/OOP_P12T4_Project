@@ -48,7 +48,7 @@ public class Dinosaur {
 
     public void jump() {
         if (position.y == 0 && !isDucking) { // Simple check to prevent double jumping
-            velocity.y = 350; // Adjust the jump height as needed
+            velocity.y = 500; // Adjust the jump height as needed
         }
     }
 
@@ -70,7 +70,7 @@ public class Dinosaur {
         return texture;
     }
 
-    //public Rectangle getBounds(){return bounds;}
+    public Rectangle getBounds(){return bounds;}
     public void dispose() {
         texture.dispose();
     }
