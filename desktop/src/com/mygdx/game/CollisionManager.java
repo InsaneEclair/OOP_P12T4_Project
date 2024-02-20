@@ -7,11 +7,12 @@ import com.badlogic.gdx.math.Rectangle;
 public class CollisionManager {
     private Dinosaur dinosaur;
     private ArrayList<EntityManager> cacti;
-    protected GameScreen gameScreen;
+    private GameEngine gameEngine; // This should be GameEngine, not GameScreen
 
-    public CollisionManager(Dinosaur dinosaur, ArrayList<EntityManager> cacti) {
+    public CollisionManager(Dinosaur dinosaur, ArrayList<EntityManager> cacti, GameEngine gameEngine) {
         this.dinosaur = dinosaur;
         this.cacti = cacti;
+        this.gameEngine = gameEngine; // Store the reference to GameEngine
     }
 
     public boolean checkCollision() {
@@ -21,14 +22,10 @@ public class CollisionManager {
             Rectangle cactusBounds = cactus.getBounds();
 
             if (dinosaurBounds.overlaps(cactusBounds)) {
-                stopGame();
-                break; //breaks the loop when collision occurs
+                gameEngine.end(); // Use the game engine to transition to the GameOverScreen
+                return true; // Collision occurred
             }
         }
         return false;
-    }
-
-    protected void stopGame() {
-        //gameScreen.end(); //closes the window when collision occurs
     }
 }

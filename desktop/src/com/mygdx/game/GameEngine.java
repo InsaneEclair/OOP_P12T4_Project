@@ -4,9 +4,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Game;
 
 public class GameEngine extends Game {
-	private SpriteBatch batch;
+    public SpriteBatch batch;
     private boolean gameStarted;
     private GameState gameState;
+    private GameScreen gameScreen;
+
     public enum GameState {
         RUNNING,
         PAUSED,
@@ -16,21 +18,37 @@ public class GameEngine extends Game {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        gameStarted = false;
-        gameState = GameState.RUNNING;
+        gameStarted = true; // Consider setting this to true if you're immediately showing the start screen
+        gameState = GameState.RUNNING; // Or PAUSED, depending on your game's initial state requirements
+        this.setScreen(new StartScreen(this, batch));
     }
 
+
     public void start() {
-        this.setScreen(new GameScreen(this, batch));
-        gameStarted = true;
+        if (!gameStarted) {
+            this.setScreen(new StartScreen(this, batch));
+            gameStarted = true;
+        } else {
+            gameState = GameState.RUNNING;
+            gameScreen = new GameScreen(this, batch);
+            this.setScreen(gameScreen);
+        }
     }
 
     public void pause() {
         gameState = GameState.PAUSED;
+        // Store the current screen so that it can be resumed later
+        gameScreen = (GameScreen) getScreen();
+        this.setScreen(new PauseScreen(this, batch));
     }
 
     public void resume() {
         gameState = GameState.RUNNING;
+        // Check if the game was paused
+        if (gameScreen != null) {
+            // Resume the game from the state it was paused
+            this.setScreen(gameScreen);
+        }
     }
 
     public void restart() {
@@ -47,7 +65,7 @@ public class GameEngine extends Game {
 
     public void end() {
         gameState = GameState.GAME_OVER;
-        dispose();
+        this.setScreen(new GameOverScreen(this, batch,gameScreen.getDinosaur()));
     }
 
     @Override
