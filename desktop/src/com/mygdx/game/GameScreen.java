@@ -98,7 +98,8 @@ public class GameScreen implements Screen {
                     newObstacle = new Cactus(camera.viewportWidth, groundYPosition, textureName);
                 } else {
                     // Create a cloud obstacle
-                    newObstacle = new Cloud(camera.viewportWidth, Gdx.graphics.getHeight() - 100); // Adjusted y-position
+                    //newObstacle = new Cloud(camera.viewportWidth, Gdx.graphics.getHeight() - 100); // Adjusted y-position
+                    newObstacle = new Balloon(camera.viewportWidth, Gdx.graphics.getHeight() - 60); // Adjusted y-position
                 }
                 obstacles.add(newObstacle);
                 timeSinceLastObstacle = 0;
