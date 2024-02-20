@@ -98,7 +98,7 @@ public class GameScreen implements Screen {
                     String textureName = obstacleTextures[obstacleType];
                     newObstacle = new Cactus(camera.viewportWidth, groundYPosition, textureName);
                 } else {
-                    // Create a cloud obstacle
+                    // Create a balloon obstacle
                     //newObstacle = new Cloud(camera.viewportWidth, Gdx.graphics.getHeight() - 100); // Adjusted y-position
                     newObstacle = new Balloon(camera.viewportWidth, Gdx.graphics.getHeight() - 60); // Adjusted y-position
                 }
@@ -143,7 +143,7 @@ public class GameScreen implements Screen {
             return 0; // Ground obstacle
         } else if ("cactus2.png".equals(textureName)) {
             return 0; // Ground Obstacle
-        } else if ("cloud.jpg".equals(textureName)) {
+        } else if ("balloon.jpg".equals(textureName)) {
             return 25; // Air Obstacle
         }
         return 0; // Default ground position
