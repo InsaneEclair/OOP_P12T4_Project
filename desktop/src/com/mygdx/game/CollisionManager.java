@@ -29,6 +29,6 @@ public class CollisionManager {
     }
 
     protected void stopGame() {
-        gameScreen.end(); //closes the window when collision occurs
+        //gameScreen.end(); //closes the window when collision occurs
     }
 }
