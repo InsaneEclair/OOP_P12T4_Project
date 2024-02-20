@@ -23,7 +23,7 @@ public class Dinosaur {
 
     private int groundLevel;
 
-    private Balloon balloon; // Reference to the balloon entity
+    //private Balloon balloon; // Reference to the balloon entity
 
 
 
@@ -101,7 +101,7 @@ public class Dinosaur {
     public Rectangle getBounds(){return bounds;}
     public void dispose() {
         texture.dispose();
-        balloon.dispose(); // Dispose the balloon texture
+        //balloon.dispose(); // Dispose the balloon texture
     }
 }
 
