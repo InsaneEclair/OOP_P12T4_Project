@@ -6,13 +6,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 
-
-
 public class Dinosaur {
-
-    public Texture texture; // Texture being displayed0
+    public Texture texture; //Texture being displayed
     private Texture standingTexture; // When Standing
-    public Texture duckingTexture; // When ducking
+    public Texture duckingTexture; //  When ducking
     public Vector2 position;
     public Vector2 velocity;
     private static final int GRAVITY = -800;
@@ -20,17 +17,41 @@ public class Dinosaur {
     public Rectangle bounds;
 
     private boolean isDucking = false;
+
+    private int score;
+    public int groundHeight;
+
+    private int groundLevel;
+
     private Balloon balloon; // Reference to the balloon entity
 
-    public Dinosaur(int x, int y) {
-        position = new Vector2(x, y);
+
+
+    public Dinosaur(int x, int groundLevel) {
+        //position = new Vector2(x, 50);
+        this.groundLevel = groundLevel; // Store the ground level
+        position = new Vector2(x, groundLevel); // Adjusted position to stand on the land
+
         velocity = new Vector2(0, 0);
         standingTexture = new Texture("main-character1.png");
         duckingTexture = new Texture("main-character5.png");
         texture = standingTexture; // Default to standing texture
-        bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
+        bounds = new Rectangle(x, groundLevel + 50, texture.getWidth(), texture.getHeight());
 
+        score = 0;
 
+    }
+
+    public void increaseScore() {
+        this.score++;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getScore() {
+        return score;
     }
 
     public void update(float dt) {
@@ -40,23 +61,29 @@ public class Dinosaur {
 
         position.add(MOVEMENT * dt, velocity.y * dt);
 
-        if (position.y < 0) {
-            position.y = 0;
-            velocity.y = 0; // Reset velocity when on the ground
+//        if (position.y < 0) {
+//            position.y = 0;
+//            velocity.y = 0; // Reset velocity when on the ground
+//        }
+
+        if (position.y < groundLevel) {
+            position.y = groundLevel; // Make sure the dinosaur lands on the ground
+            velocity.y = 0; // Reset the vertical velocity
         }
 
-        bounds.setPosition(position.x, position.y);
 
-        // Update the balloon's position based on the ducking state of the dinosaur
+
+        bounds.setPosition(position.x, position.y);
         if (isDucking) {
             balloon.position.set(position.x + texture.getWidth() / 2, position.y + texture.getHeight());
             balloon.bounds.setPosition(balloon.position.x, balloon.position.y);
         }
     }
 
+
     public void jump() {
-        if (position.y == 0 && !isDucking) { // Simple check to prevent double jumping
-            velocity.y = 300; // Adjust the jump height as needed
+        if (position.y == groundLevel && !isDucking) { // Simple check to prevent double jumping
+            velocity.y = 500; // Adjust the jump height as needed
         }
     }
 

@@ -8,7 +8,7 @@ public class Balloon extends EntityManager {
     private static final int BALLOON_OFFSET_X = 10; // Adjust this value as needed
 
     public Balloon(float x, float y) {
-        super(x, 3.5F, "balloon.jpg");
+        super(x, y, "balloon.jpg");
     }
 
     // Adjust the position of the balloon based on the dinosaur's position
@@ -19,5 +19,8 @@ public class Balloon extends EntityManager {
         } else {
             super.update(dt);
         }
+        position.add(MOVEMENT * dt, 0);
+        bounds.setPosition(position.x, position.y);
     }
-}
+    }
+
