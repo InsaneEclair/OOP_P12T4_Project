@@ -10,20 +10,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class StartScreen implements Screen {
 
     private final GameEngine game;
     private final SpriteBatch batch;
-
     private final Texture dinoTexture;
     private final BitmapFont font;
     private final FreeTypeFontGenerator generator;
-
-    private OrthographicCamera camera;
+    private final OrthographicCamera camera;
 
 
     public StartScreen(final GameEngine game, SpriteBatch batch) {
@@ -66,7 +61,7 @@ public class StartScreen implements Screen {
         float centerX = camera.viewportWidth / 2f;
         float centerY = camera.viewportHeight / 2f;
 
-        batch.draw(dinoTexture, centerX - dinoTexture.getWidth() / 2, centerY - 50 - dinoTexture.getHeight() / 2);
+        batch.draw(dinoTexture, centerX - (float) dinoTexture.getWidth() / 2, centerY - 50 - (float) dinoTexture.getHeight() / 2);
         font.draw(batch, "Press Space to Start the Game", centerX - 150, centerY + 50);
 
 
@@ -76,7 +71,7 @@ public class StartScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         camera.viewportWidth = 800; // You may adjust this according to your desired initial viewport width
-        camera.viewportHeight = 800 * height / width; // Maintain aspect ratio
+        camera.viewportHeight = (float) (800 * height) / width; // Maintain aspect ratio
         camera.update();
 
     }

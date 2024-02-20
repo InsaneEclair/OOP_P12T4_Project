@@ -4,12 +4,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Game;
 
 public class GameEngine extends Game {
-    public SpriteBatch batch;
+    private SpriteBatch batch;
+    private Dinosaur dinosaur;
     private boolean gameStarted;
     private GameState gameState;
-    private GameScreen gameScreen;
+    private ScreenManager screenManager;
 
     public enum GameState {
+        START,
         RUNNING,
         PAUSED,
         GAME_OVER
@@ -17,55 +19,39 @@ public class GameEngine extends Game {
 
     @Override
     public void create() {
-        batch = new SpriteBatch();
-        gameStarted = true; // Consider setting this to true if you're immediately showing the start screen
-        gameState = GameState.RUNNING; // Or PAUSED, depending on your game's initial state requirements
-        this.setScreen(new StartScreen(this, batch));
+        this.batch = new SpriteBatch();
+        this.dinosaur = new Dinosaur(0,50);
+        this.gameStarted = true;
+        this.gameState = GameState.START;
+        this.screenManager = new ScreenManager(this, batch);
+        screenManager.goToState(gameState);
     }
-
 
     public void start() {
         if (!gameStarted) {
-            this.setScreen(new StartScreen(this, batch));
             gameStarted = true;
+            screenManager.goToState(GameState.START);
         } else {
-            gameState = GameState.RUNNING;
-            gameScreen = new GameScreen(this, batch);
-            this.setScreen(gameScreen);
+            screenManager.goToState(GameState.RUNNING);
         }
     }
 
     public void pause() {
-        gameState = GameState.PAUSED;
-        // Store the current screen so that it can be resumed later
-        gameScreen = (GameScreen) getScreen();
-        this.setScreen(new PauseScreen(this, batch));
+        screenManager.goToState(GameState.PAUSED);
     }
 
     public void resume() {
-        gameState = GameState.RUNNING;
-        // Check if the game was paused
-        if (gameScreen != null) {
-            // Resume the game from the state it was paused
-            this.setScreen(gameScreen);
-        }
+        screenManager.goToState(GameState.RUNNING);
+    }
+
+    public void end() {
+        screenManager.goToState(GameState.GAME_OVER);
     }
 
     public void restart() {
         // reset game variables
-        gameStarted = false;
-        gameState = GameState.RUNNING;
-
-        // create a new GameScreen instance
-        GameScreen newScreen = new GameScreen(this, batch);
-
-        // set the new screen as the current screen
-        this.setScreen(newScreen);
-    }
-
-    public void end() {
-        gameState = GameState.GAME_OVER;
-        this.setScreen(new GameOverScreen(this, batch,gameScreen.getDinosaur()));
+        dinosaur.setScore(0);
+        screenManager.goToState(GameState.RUNNING);
     }
 
     @Override
@@ -91,5 +77,9 @@ public class GameEngine extends Game {
 
     public void setGameState(GameState state) {
         gameState = state;
+    }
+
+    public Dinosaur getDinosaur() {
+        return dinosaur;
     }
 }
