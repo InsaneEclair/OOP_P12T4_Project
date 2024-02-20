@@ -71,13 +71,6 @@ public class Dinosaur {
             velocity.y = 0; // Reset the vertical velocity
         }
 
-
-
-        bounds.setPosition(position.x, position.y);
-        if (isDucking) {
-            balloon.position.set(position.x + texture.getWidth() / 2, position.y + texture.getHeight());
-            balloon.bounds.setPosition(balloon.position.x, balloon.position.y);
-        }
     }
 
 
