@@ -241,6 +241,7 @@ public class GameScreen implements Screen {
     private static final float airYPosition = 25;
     private CollisionManager collisionManager;
     private PlayerController playerController;
+    private ControlsManager controlsManager;
     private SoundManager soundManager;
     private final BitmapFont font;
     private final FreeTypeFontGenerator generator;
@@ -262,6 +263,7 @@ public class GameScreen implements Screen {
         dinosaur = new Dinosaur(0, 50); // Instantiation of the Dinosaur object
         soundManager = new SoundManager();
         playerController = new PlayerController(dinosaur, soundManager);
+        controlsManager = new ControlsManager(playerController);
         Texture groundTexture = new Texture("land1.png");
 
         backgrounds = new Texture[1];
@@ -387,7 +389,7 @@ public class GameScreen implements Screen {
 
 
     private void handleInput() {
-        playerController.update();
+        controlsManager.update();
     }
 
     private float getRandomSpawnTime() {

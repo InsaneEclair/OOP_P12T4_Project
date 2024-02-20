@@ -17,6 +17,7 @@ public class Dinosaur {
     public Rectangle bounds;
 
     private boolean isDucking = false;
+    private boolean jumpSoundPlayed = false;
 
     private int score;
     public int groundHeight;
@@ -69,6 +70,7 @@ public class Dinosaur {
         if (position.y < groundLevel) {
             position.y = groundLevel; // Make sure the dinosaur lands on the ground
             velocity.y = 0; // Reset the vertical velocity
+            jumpSoundPlayed = false;
         }
 
     }
@@ -77,6 +79,7 @@ public class Dinosaur {
     public void jump() {
         if (position.y == groundLevel && !isDucking) { // Simple check to prevent double jumping
             velocity.y = 350; // Adjust the jump height as needed
+            jumpSoundPlayed = true;
         }
     }
 
@@ -93,6 +96,15 @@ public class Dinosaur {
             isDucking = false;
         }
     }
+
+    public boolean isDucking() { //public getter methods for player controller
+        return isDucking;
+    }
+
+    public int getGroundLevel() { //public getter methods  for player controller
+        return groundLevel;
+    }
+
 
     public Texture getTexture() {
         return texture;

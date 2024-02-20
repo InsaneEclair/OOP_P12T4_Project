@@ -28,5 +28,7 @@ public class SoundManager {
 
     public void dispose() {
         jumpSound.dispose();
+        deadSound.dispose();
+        scoreUpSound.dispose();
     }
 }

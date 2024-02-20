@@ -1,8 +1,6 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-public class PlayerController {
+public class PlayerController implements ControlsManager.InputListener {
     private Dinosaur dinosaur;
     private SoundManager soundManager;
 
@@ -11,22 +9,21 @@ public class PlayerController {
         this.soundManager = soundManager;
     }
 
-    public void update() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+    @Override
+    public void onJump() {
+        // uses the getter methods
+        if (dinosaur.position.y == dinosaur.getGroundLevel() && !dinosaur.isDucking()) {
             dinosaur.jump();
             soundManager.playJumpSound();
         }
+    }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+    @Override
+    public void onDuck(boolean isDucking) {
+        if (isDucking) {
             dinosaur.duck();
         } else {
             dinosaur.standUp();
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
         }
     }
 }
