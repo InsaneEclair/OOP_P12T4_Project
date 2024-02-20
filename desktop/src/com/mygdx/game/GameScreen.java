@@ -29,6 +29,9 @@ public class GameScreen implements Screen {
     private String[] obstacleTextures = new String[]{"cactus1.png", "cactus2.png"};
     private static final float groundYPosition = 0;
     private static final float airYPosition = 25;
+    private CollisionManager collisionManager;
+    private PlayerController playerController;
+    private SoundManager soundManager;
 
     public GameScreen(final GameEngine game, SpriteBatch batch) {
         this.game = game;
@@ -37,6 +40,9 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         dinosaur = new Dinosaur(0, 0); // Instantiation of the Dinosaur object
+        soundManager = new SoundManager();
+        playerController = new PlayerController(dinosaur, soundManager);
+
         backgrounds = new Texture[3];
         backgrounds[0] = new Texture(Gdx.files.internal("land1.png"));
         backgrounds[1] = new Texture(Gdx.files.internal("land2.png"));
@@ -52,22 +58,17 @@ public class GameScreen implements Screen {
         minTimeBetweenObstacles = 1.0f; // Minimum time in seconds until the next obstacle spawns
         maxTimeBetweenObstacles = 3.0f; // Maximum time in seconds until the next obstacle spawns
         timeUntilNextObstacle = getRandomSpawnTime();
+
+        collisionManager = new CollisionManager(dinosaur, obstacles);
     }
 
     @Override
     public void render(float delta) {
         if (game.isGameStarted() && game.getGameState() != GameEngine.GameState.GAME_OVER) {
+            handleInput();
+
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-            if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-                dinosaur.jump();
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-                dinosaur.duck();
-            } else {
-                dinosaur.standUp();
-            }
 
             dinosaur.update(delta);
             camera.update();
@@ -122,8 +123,17 @@ public class GameScreen implements Screen {
 
             Gdx.app.log("Dinosaur Position", dinosaur.position.toString());
         }
+
+        // Check for collisions
+        if(collisionManager.checkCollision()){
+            collisionManager.stopGame();
+        }
     }
 
+
+    private void handleInput() {
+        playerController.update();
+    }
     private float getRandomSpawnTime() {
         return random.nextFloat() * (maxTimeBetweenObstacles - minTimeBetweenObstacles) + minTimeBetweenObstacles;
     }
@@ -185,6 +195,7 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         // Dispose of game resources
+        soundManager.dispose();
         dinosaur.dispose();
         for (Texture background : backgrounds) {
             background.dispose();

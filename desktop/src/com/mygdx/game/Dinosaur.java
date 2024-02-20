@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.audio.Sound;
+
 
 
 
@@ -18,7 +18,7 @@ public class Dinosaur {
     private static final int GRAVITY = -800;
     private static final int MOVEMENT = 0;
     public Rectangle bounds;
-    public Sound jumpSound;
+
     private boolean isDucking = false;
     private Balloon balloon; // Reference to the balloon entity
 
@@ -29,7 +29,7 @@ public class Dinosaur {
         duckingTexture = new Texture("main-character5.png");
         texture = standingTexture; // Default to standing texture
         bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
-        jumpSound = Gdx.audio.newSound(Gdx.files.internal("jump1.wav"));
+
 
     }
 
@@ -56,8 +56,7 @@ public class Dinosaur {
 
     public void jump() {
         if (position.y == 0 && !isDucking) { // Simple check to prevent double jumping
-            velocity.y = 350; // Adjust the jump height as needed
-            jumpSound.play();
+            velocity.y = 500; // Adjust the jump height as needed
         }
     }
 
@@ -79,6 +78,7 @@ public class Dinosaur {
         return texture;
     }
 
+    public Rectangle getBounds(){return bounds;}
     public void dispose() {
         texture.dispose();
         balloon.dispose(); // Dispose the balloon texture
