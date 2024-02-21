@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import java.util.ArrayList;
 
-public abstract class GameScreen implements Screen {
+public class GameScreen implements Screen {
     private final GameEngine game;
     private final SpriteBatch batch;
     private final OrthographicCamera camera;
@@ -56,6 +56,7 @@ public abstract class GameScreen implements Screen {
         this.aiManager = new AIManager(this, minTimeBetweenObstacles, maxTimeBetweenObstacles);
         this.collisionManager = new CollisionManager(dinosaur, obstacles, game);
     }
+
     @Override
     public void render(float delta) {
         if (game.isGameStarted() && game.getGameState() != GameEngine.GameState.GAME_OVER) {
@@ -130,6 +131,27 @@ public abstract class GameScreen implements Screen {
         camera.viewportHeight = height;
         camera.update();
     }
+
+    @Override
+    public void show() {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
     public void playScoreUpSound() {
         soundManager.playScoreUpSound();
     }
