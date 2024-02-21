@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
 public class ControlsManager {
-    private InputListener listener;
+    private final InputListener listener;
 
     public ControlsManager(InputListener listener) {
         this.listener = listener;
@@ -21,10 +21,6 @@ public class ControlsManager {
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             listener.onJump();
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            listener.onDuck(true);
-        } else {
-            listener.onDuck(false);
-        }
+        listener.onDuck(Gdx.input.isKeyPressed(Input.Keys.DOWN));
     }
 }

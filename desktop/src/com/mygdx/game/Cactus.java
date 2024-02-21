@@ -1,19 +1,9 @@
-
 package com.mygdx.game;
-
-import com.badlogic.gdx.math.Rectangle;
 
 public class Cactus extends EntityManager {
     //public Rectangle bounds;
-    public Cactus(float x, float y, String textureFileName) {
+    public Cactus(float x, float y, String textureFileName, float speed) {
         super(x, y, textureFileName);
+        this.speed = speed; // Assign speed to a class field or directly to the movement logic
     }
-
-    @Override
-    public void update(float dt) {
-        position.add(MOVEMENT * dt, 0);
-        bounds.setPosition(position.x, position.y);
-    }
-
-    public Rectangle getBounds(){return bounds;}
 }
