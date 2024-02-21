@@ -15,12 +15,10 @@ public class PauseScreen implements Screen {
 
     private final GameEngine game;
     private final SpriteBatch batch;
-
     private final Texture dinoTexture;
     private final BitmapFont font;
     private final FreeTypeFontGenerator generator;
-
-    private OrthographicCamera camera;
+    private final OrthographicCamera camera;
 
 
     public PauseScreen(final GameEngine game, SpriteBatch batch) {
@@ -63,7 +61,7 @@ public class PauseScreen implements Screen {
         float centerX = camera.viewportWidth / 2f;
         float centerY = camera.viewportHeight / 2f;
 
-        batch.draw(dinoTexture, centerX - dinoTexture.getWidth() / 2, centerY - 50 - dinoTexture.getHeight() / 2);
+        batch.draw(dinoTexture, centerX - (float) dinoTexture.getWidth() / 2, centerY - 50 - (float) dinoTexture.getHeight() / 2);
         font.draw(batch, "Game Paused", centerX - 50, centerY + 100);
         font.draw(batch, "Press Space to Resume the Game", centerX - 150, centerY + 50);
 
@@ -74,7 +72,7 @@ public class PauseScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         camera.viewportWidth = 800; // You may adjust this according to your desired initial viewport width
-        camera.viewportHeight = 800 * height / width; // Maintain aspect ratio
+        camera.viewportHeight = (float) (800 * height) / width; // Maintain aspect ratio
         camera.update();
 
     }

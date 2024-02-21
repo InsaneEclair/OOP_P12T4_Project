@@ -16,24 +16,19 @@ public class GameOverScreen implements Screen {
 
     private final GameEngine game;
     private final SpriteBatch batch;
-
     private final Texture dinoTexture;
     private final Texture restartTexture;
     private final BitmapFont font;
     private final FreeTypeFontGenerator generator;
-
     private float imgX;
     private float imgY;
-
-    private OrthographicCamera camera;
-
-
+    private final OrthographicCamera camera;
     private final Dinosaur dinosaur;
 
-    public GameOverScreen(final GameEngine game, SpriteBatch batch, Dinosaur dinosaur) {
+    public GameOverScreen(final GameEngine game, SpriteBatch batch) {
         this.game = game;
         this.batch = batch;
-        this.dinosaur = dinosaur;
+        this.dinosaur = game.getDinosaur();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
@@ -68,10 +63,10 @@ public class GameOverScreen implements Screen {
         float centerX = camera.viewportWidth / 2f;
         float centerY = camera.viewportHeight / 2f;
 
-        imgX = centerX - restartTexture.getWidth() / 2;
-        imgY = centerY - (restartTexture.getHeight() / 2) - 50;
+        imgX = centerX - (float) restartTexture.getWidth() / 2;
+        imgY = centerY - ((float) restartTexture.getHeight() / 2) - 50;
 
-        batch.draw(dinoTexture, centerX - dinoTexture.getWidth() / 2, centerY - 120 - dinoTexture.getHeight() / 2);
+        batch.draw(dinoTexture, centerX - (float) dinoTexture.getWidth() / 2, centerY - 120 - (float) dinoTexture.getHeight() / 2);
         batch.draw(restartTexture, imgX, imgY);
         font.draw(batch, "Game Over", centerX - 50, centerY + 50);
         font.draw(batch, "Your score: " + dinosaur.getScore(), centerX - 100, centerY + 10);
@@ -87,7 +82,7 @@ public class GameOverScreen implements Screen {
                 // Check if the touch position is within the bounds of the restart button
                 if (worldX >= imgX && worldX <= imgX + restartTexture.getWidth() &&
                         worldY >= imgY && worldY <= imgY + restartTexture.getHeight()) {
-                    game.start();
+                    game.restart();
                 }
                 return true;
             }
@@ -99,7 +94,7 @@ public class GameOverScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         camera.viewportWidth = 800; // You may adjust this according to your desired initial viewport width
-        camera.viewportHeight = 800 * height / width; // Maintain aspect ratio
+        camera.viewportHeight = (float) (800 * height) / width; // Maintain aspect ratio
         camera.update();
 
     }
