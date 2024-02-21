@@ -4,9 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 
 public class SoundManager {
-    private Sound jumpSound;
-    private Sound scoreUpSound;
-    private Sound deadSound;
+    private final Sound jumpSound;
+    private final Sound scoreUpSound;
+    private final Sound deadSound;
 
     public SoundManager() {
         jumpSound = Gdx.audio.newSound(Gdx.files.internal("jump1.wav"));
