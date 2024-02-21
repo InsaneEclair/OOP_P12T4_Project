@@ -5,10 +5,10 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class CollisionManager {
     private Dinosaur dinosaur;
-    private ArrayList<EntityManager> obstacle;
+    private ArrayList<Obstacle> obstacle;
     private GameEngine gameEngine; // This should be GameEngine, not GameScreen
 
-    public CollisionManager(Dinosaur dinosaur, ArrayList<EntityManager> obstacle, GameEngine gameEngine) {
+    public CollisionManager(Dinosaur dinosaur, ArrayList<Obstacle> obstacle, GameEngine gameEngine) {
         this.dinosaur = dinosaur;
         this.obstacle = obstacle;
         this.gameEngine = gameEngine; // Store the reference to GameEngine
@@ -17,7 +17,7 @@ public class CollisionManager {
     public boolean checkCollision() {
         Rectangle dinosaurBounds = dinosaur.getBounds();
 
-        for (EntityManager obstacles : obstacle) {
+        for (Obstacle obstacles : obstacle) {
             Rectangle obstaclesBounds = obstacles.getBounds();
 
             if (dinosaurBounds.overlaps(obstaclesBounds)) {

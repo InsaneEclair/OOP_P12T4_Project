@@ -5,14 +5,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-public class EntityManager {
+public class Obstacle {
     public static int MOVEMENT = -150;
     protected Texture texture;
     protected Vector2 position;
     protected Rectangle bounds;
     protected float speed;
 
-    public EntityManager(float x, float y, String textureFileName) {
+    public Obstacle(float x, float y, String textureFileName) {
         texture = new Texture(Gdx.files.internal(textureFileName));
         position = new Vector2(x, y);
         bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());

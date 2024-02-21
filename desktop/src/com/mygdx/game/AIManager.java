@@ -59,7 +59,7 @@ public class AIManager {
     private void spawnObstacle() {
         int obstacleType = random.nextInt(gameScreen.getObstacleTextures().length + 1);
 
-        EntityManager newObstacle;
+        Obstacle newObstacle;
         if (obstacleType < gameScreen.getObstacleTextures().length) {
             String textureName = gameScreen.getObstacleTextures()[obstacleType];
             newObstacle = new Cactus(gameScreen.getViewportWidth(), gameScreen.getGroundYPosition(), textureName, obstacleSpeed);

@@ -18,7 +18,7 @@ public class GameScreen implements Screen {
     private final OrthographicCamera camera;
     final Dinosaur dinosaur;
     private final Texture background;
-    private final ArrayList<EntityManager> obstacles;
+    private final ArrayList<Obstacle> obstacles;
     private final String[] obstacleTextures = new String[]{"cactus1.png", "cactus2.png"};
     private static final float groundYPosition = 50; // Example value
     private static final float airYPosition = 85; // Example value
@@ -85,7 +85,7 @@ public class GameScreen implements Screen {
             batch.draw(background, 0, 50, Gdx.graphics.getWidth(), background.getHeight());
 
             // Draw obstacles
-            for (EntityManager obstacle : obstacles) {
+            for (Obstacle obstacle : obstacles) {
                 obstacle.update(delta);
                 batch.draw(obstacle.texture, obstacle.position.x, obstacle.position.y);
             }
@@ -105,7 +105,7 @@ public class GameScreen implements Screen {
         return camera.viewportWidth;
     }
 
-    public void addObstacle(EntityManager obstacle) {
+    public void addObstacle(Obstacle obstacle) {
         obstacles.add(obstacle);
     }
 
@@ -165,7 +165,7 @@ public class GameScreen implements Screen {
         generator.dispose();
         if (background != null) background.dispose(); // Ensure background texture is disposed
 
-        for (EntityManager obstacle : obstacles) {
+        for (Obstacle obstacle : obstacles) {
             obstacle.dispose();
         }
     }

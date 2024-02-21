@@ -1,6 +1,6 @@
 package com.mygdx.game;
 
-public class Cactus extends EntityManager {
+public class Cactus extends Obstacle {
     //public Rectangle bounds;
     public Cactus(float x, float y, String textureFileName, float speed) {
         super(x, y, textureFileName);
