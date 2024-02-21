@@ -41,7 +41,6 @@ public class StartScreen implements Screen {
 
     @Override
     public void show() {
-
     }
 
     @Override
@@ -63,7 +62,6 @@ public class StartScreen implements Screen {
 
         batch.draw(dinoTexture, centerX - (float) dinoTexture.getWidth() / 2, centerY - 50 - (float) dinoTexture.getHeight() / 2);
         font.draw(batch, "Press Space to Start the Game", centerX - 150, centerY + 50);
-
 
         batch.end();
     }
