@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import com.badlogic.gdx.math.Rectangle;
 
 public class CollisionManager {
-    private Dinosaur dinosaur;
-    private ArrayList<Obstacle> obstacle;
-    private GameEngine gameEngine; // This should be GameEngine, not GameScreen
+    private final Dinosaur dinosaur;
+    private final ArrayList<Obstacle> obstacle;
+    private final GameEngine gameEngine; // This should be GameEngine, not GameScreen
 
     public CollisionManager(Dinosaur dinosaur, ArrayList<Obstacle> obstacle, GameEngine gameEngine) {
         this.dinosaur = dinosaur;

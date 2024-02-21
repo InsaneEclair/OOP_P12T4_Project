@@ -3,6 +3,7 @@ package com.mygdx.game;
 import java.util.Random;
 
 public class AIManager {
+    private final GameEngine gameEngine;
     private final GameScreen gameScreen;
     private final Random random;
     private float timeUntilNextObstacle;
@@ -11,7 +12,8 @@ public class AIManager {
     private float obstacleSpeed = -150; // Initial speed of obstacles
     private int lastScoreIncrement = 0; // Keeps track of the last score increment
 
-    public AIManager(GameScreen gameScreen, float minTimeBetweenObstacles, float maxTimeBetweenObstacles) {
+    public AIManager(GameEngine gameEngine, GameScreen gameScreen, float minTimeBetweenObstacles, float maxTimeBetweenObstacles) {
+        this.gameEngine = gameEngine;
         this.gameScreen = gameScreen;
         this.minTimeBetweenObstacles = minTimeBetweenObstacles;
         this.maxTimeBetweenObstacles = maxTimeBetweenObstacles;
@@ -28,7 +30,7 @@ public class AIManager {
     }
 
     public void update(float delta) {
-        int currentScore = gameScreen.dinosaur.getScore(); // Assumes there's a way to get the current score from GameScreen
+        int currentScore = gameEngine.getDinosaur().getScore();
 
         // Check if the score has reached a new 200-point increment
         if (currentScore / 200 > lastScoreIncrement) {

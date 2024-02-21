@@ -16,7 +16,7 @@ public class GameScreen implements Screen {
     private final GameEngine game;
     private final SpriteBatch batch;
     private final OrthographicCamera camera;
-    final Dinosaur dinosaur;
+    private final Dinosaur dinosaur;
     private final Texture background;
     private final ArrayList<Obstacle> obstacles;
     private final String[] obstacleTextures = new String[]{"cactus1.png", "cactus2.png"};
@@ -53,7 +53,7 @@ public class GameScreen implements Screen {
         float minTimeBetweenObstacles = 1.0f; // Minimum time in seconds until the next obstacle spawns
         float maxTimeBetweenObstacles = 3.0f; // Maximum time in seconds until the next obstacle spawns
 
-        this.aiManager = new AIManager(this, minTimeBetweenObstacles, maxTimeBetweenObstacles);
+        this.aiManager = new AIManager(game,this, minTimeBetweenObstacles, maxTimeBetweenObstacles);
         this.collisionManager = new CollisionManager(dinosaur, obstacles, game);
     }
 
@@ -87,11 +87,11 @@ public class GameScreen implements Screen {
             // Draw obstacles
             for (Obstacle obstacle : obstacles) {
                 obstacle.update(delta);
-                batch.draw(obstacle.texture, obstacle.position.x, obstacle.position.y);
+                batch.draw(obstacle.getTexture(), obstacle.getPosition().x, obstacle.getPosition().y);
             }
 
             // Draw dinosaur
-            batch.draw(dinosaur.getTexture(), dinosaur.position.x, dinosaur.position.y);
+            batch.draw(dinosaur.getTexture(), dinosaur.getPosition().x, dinosaur.getPosition().y);
 
             // Draw score
             dinosaur.setScore((int) (dinosaur.getScore() + (60 * delta))); //increment score

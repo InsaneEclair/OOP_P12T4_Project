@@ -6,11 +6,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Obstacle {
-    public static int MOVEMENT = -150;
-    protected Texture texture;
-    protected Vector2 position;
-    protected Rectangle bounds;
-    protected float speed;
+    private static int MOVEMENT = -150;
+    private final Texture texture;
+    private final Vector2 position;
+    private final Rectangle bounds;
+    private float speed;
 
     public Obstacle(float x, float y, String textureFileName) {
         texture = new Texture(Gdx.files.internal(textureFileName));
@@ -26,7 +26,29 @@ public class Obstacle {
     public Rectangle getBounds() {
         return bounds;
     }
+
+    public static void setMOVEMENT(int MOVEMENT) {
+        Obstacle.MOVEMENT = MOVEMENT;
+    }
+
+    public Texture getTexture() {
+        return texture;
+    }
+
+    public Vector2 getPosition() {
+        return position;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
     public void dispose() {
         texture.dispose();
     }
+
 }
