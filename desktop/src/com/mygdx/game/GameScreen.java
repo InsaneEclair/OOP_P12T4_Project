@@ -399,7 +399,7 @@ public class GameScreen implements Screen {
             return 0; // Ground obstacle
         } else if ("cactus2.png".equals(textureName)) {
             return 0; // Ground Obstacle
-        } else if ("balloon.jpg".equals(textureName)) {
+        } else if ("oldballoon.jpg".equals(textureName)) {
             return 25; // Air Obstacle
         }
         return 0; // Default ground position
