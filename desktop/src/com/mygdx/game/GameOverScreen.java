@@ -1,7 +1,6 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -76,11 +75,10 @@ public class GameOverScreen implements Screen {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
                 // Convert screen coordinates to world coordinates
-                float worldX = screenX;
                 float worldY = Gdx.graphics.getHeight() - screenY;
 
                 // Check if the touch position is within the bounds of the restart button
-                if (worldX >= imgX && worldX <= imgX + restartTexture.getWidth() &&
+                if ((float) screenX >= imgX && (float) screenX <= imgX + restartTexture.getWidth() &&
                         worldY >= imgY && worldY <= imgY + restartTexture.getHeight()) {
                     game.restart();
                 }
