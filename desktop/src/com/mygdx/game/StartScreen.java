@@ -60,8 +60,12 @@ public class StartScreen implements Screen {
         float centerX = camera.viewportWidth / 2f;
         float centerY = camera.viewportHeight / 2f;
 
-        batch.draw(dinoTexture, centerX - (float) dinoTexture.getWidth() / 2, centerY - 50 - (float) dinoTexture.getHeight() / 2);
-        font.draw(batch, "Press Space to Start the Game", centerX - 150, centerY + 50);
+        batch.draw(dinoTexture, centerX - (float) dinoTexture.getWidth() / 2, centerY + 10  - (float) dinoTexture.getHeight() / 2);
+        font.draw(batch, "Press Space to Start the Game", centerX - 170, centerY + 100);
+        font.draw(batch, "Instructions", centerX - 80, centerY - 70);
+        font.draw(batch, "Press 'Up' Arrow to Jump", centerX - 150, centerY - 100);
+        font.draw(batch, "Press 'Down' Arrow to Duck", centerX - 160, centerY - 130);
+        font.draw(batch, "Press 'esc' to Pause the Game", centerX - 170, centerY - 160);
 
         batch.end();
     }
