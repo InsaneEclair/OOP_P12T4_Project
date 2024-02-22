@@ -5,14 +5,14 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Dinosaur {
-    public Texture texture; //Texture being displayed
+    private Texture texture; //Texture being displayed
     private final Texture standingTexture; // When Standing
-    public Texture duckingTexture; //  When ducking
-    public Vector2 position;
-    public Vector2 velocity;
+    private final Texture duckingTexture; //  When ducking
+    private final Vector2 position;
+    private final Vector2 velocity;
     private static final int GRAVITY = -800;
     private static final int MOVEMENT = 0;
-    public Rectangle bounds;
+    private final Rectangle bounds;
     private boolean isDucking = false;
     private int score;
     private final int groundLevel;
@@ -96,6 +96,11 @@ public class Dinosaur {
     }
 
     public Rectangle getBounds(){return bounds;}
+
+    public Vector2 getPosition() {
+        return position;
+    }
+
     public void dispose() {
         texture.dispose();
     }

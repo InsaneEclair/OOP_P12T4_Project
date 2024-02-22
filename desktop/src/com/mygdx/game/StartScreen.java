@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 public class StartScreen implements Screen {
-
     private final GameEngine game;
     private final SpriteBatch batch;
     private final Texture dinoTexture;

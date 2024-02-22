@@ -1,8 +1,8 @@
 package com.mygdx.game;
 
 public class PlayerController implements ControlsManager.InputListener {
-    private Dinosaur dinosaur;
-    private SoundManager soundManager;
+    private final Dinosaur dinosaur;
+    private final SoundManager soundManager;
 
     public PlayerController(Dinosaur dinosaur, SoundManager soundManager) {
         this.dinosaur = dinosaur;
@@ -12,7 +12,7 @@ public class PlayerController implements ControlsManager.InputListener {
     @Override
     public void onJump() {
         // uses the getter methods
-        if (dinosaur.position.y == dinosaur.getGroundLevel() && !dinosaur.isDucking()) {
+        if (dinosaur.getPosition().y == dinosaur.getGroundLevel() && !dinosaur.isDucking()) {
             dinosaur.jump();
             soundManager.playJumpSound();
         }
