@@ -10,33 +10,48 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
+
 
 public class StartScreen implements Screen {
     private final GameEngine game;
     private final SpriteBatch batch;
+    private Texture backgroundTexture;
+    private Texture[] planetTextures; // Array to hold multiple planet textures
     private final Texture dinoTexture;
     private final BitmapFont font;
     private final FreeTypeFontGenerator generator;
     private final OrthographicCamera camera;
 
 
+
     public StartScreen(final GameEngine game, SpriteBatch batch) {
         this.game = game;
         this.batch = batch;
 
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
 
-        // Create font to draw text
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, 800, 500);
+
+
+
+        // Improved font creation with better visibility
         generator = new FreeTypeFontGenerator(Gdx.files.internal("PressStart2P.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 12;
-        parameter.color = Color.DARK_GRAY;
+        parameter.size = 15; // Adjusted font size for better visibility
+        parameter.color = Color.WHITE; // Changed font color for better contrast
+        parameter.borderWidth = 2; // Outline width
+        parameter.borderColor = Color.BLACK; // Outline color
         font = generator.generateFont(parameter);
 
-
-        dinoTexture = new Texture("main-character1.png");
+        // Loading textures
+        backgroundTexture = new Texture("planetspace.jpg"); // Ensure this path is correct
+        planetTextures = new Texture[]{ new Texture("planetspace.jpg"), };
+        dinoTexture = new Texture("main-character1.png"); // Ensure this path is correct
     }
+
 
     @Override
     public void show() {
@@ -47,32 +62,43 @@ public class StartScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             game.start();
         }
-
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear the screen
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
+
+
         batch.begin();
+        // Draw the space background
+        batch.draw(backgroundTexture, 0, 0, camera.viewportWidth, camera.viewportHeight);
+
+
+
+
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
+
 
         float centerX = camera.viewportWidth / 2f;
         float centerY = camera.viewportHeight / 2f;
 
         batch.draw(dinoTexture, centerX - (float) dinoTexture.getWidth() / 2, centerY + 10  - (float) dinoTexture.getHeight() / 2);
-        font.draw(batch, "Press Space to Start the Game", centerX - 170, centerY + 100);
-        font.draw(batch, "Instructions", centerX - 80, centerY - 70);
-        font.draw(batch, "Press 'Up' Arrow to Jump", centerX - 150, centerY - 100);
-        font.draw(batch, "Press 'Down' Arrow to Duck", centerX - 160, centerY - 130);
-        font.draw(batch, "Press 'esc' to Pause the Game", centerX - 170, centerY - 160);
+        font.draw(batch, "Press Space to Start the Game", centerX - 220, centerY + 100);
+
 
         batch.end();
+        // Check for touch input
+        if (Gdx.input.justTouched()) {
+            Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            camera.unproject(touchPos); // Convert screen coordinates to game world coordinates
+}
     }
 
     @Override
     public void resize(int width, int height) {
         camera.viewportWidth = 800; // You may adjust this according to your desired initial viewport width
-        camera.viewportHeight = (float) (800 * height) / width; // Maintain aspect ratio
+        camera.viewportHeight = (float) (900 * height) / width; // Maintain aspect ratio
         camera.update();
 
     }
@@ -97,5 +123,6 @@ public class StartScreen implements Screen {
         generator.dispose();
         dinoTexture.dispose();
         font.dispose();
+
     }
 }
