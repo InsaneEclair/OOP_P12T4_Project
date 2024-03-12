@@ -10,47 +10,37 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-
 
 public class StartScreen implements Screen {
     private final GameEngine game;
     private final SpriteBatch batch;
     private final Texture backgroundTexture;
-
     private final Texture dinoTexture;
     private final BitmapFont font;
     private final FreeTypeFontGenerator generator;
     private final OrthographicCamera camera;
-
-
+    private final Texture instructionsButtonTexture;
 
     public StartScreen(final GameEngine game, SpriteBatch batch) {
         this.game = game;
         this.batch = batch;
-
-
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 500);
 
-
-
-        // Improved font creation with better visibility
         generator = new FreeTypeFontGenerator(Gdx.files.internal("PressStart2P.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 15; // Adjusted font size for better visibility
-        parameter.color = Color.WHITE; // Changed font color for better contrast
-        parameter.borderWidth = 2; // Outline width
-        parameter.borderColor = Color.BLACK; // Outline color
+        parameter.size = 15;
+        parameter.color = Color.WHITE;
+        parameter.borderWidth = 2;
+        parameter.borderColor = Color.BLACK;
         font = generator.generateFont(parameter);
 
-        // Loading textures
-        backgroundTexture = new Texture("planetspace.jpg"); // Ensure this path is correct
-
-        dinoTexture = new Texture("main-character1.png"); // Ensure this path is correct
+        backgroundTexture = new Texture("planetspace.jpg");
+        dinoTexture = new Texture("main-character1.png");
+        instructionsButtonTexture = new Texture("instructions.png");
     }
-
 
     @Override
     public void show() {
@@ -58,78 +48,108 @@ public class StartScreen implements Screen {
 
     @Override
     public void render(float delta) {
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+//            game.start();
+//        }
+//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+//        camera.update();
+//        batch.setProjectionMatrix(camera.combined);
+//        batch.begin();
+//
+//        // Draw the background
+//        batch.draw(backgroundTexture, 0, 0, camera.viewportWidth, camera.viewportHeight);
+//
+//        // Scale and draw the instructions button
+//        float scale = 0.5f; // Scale factor for the button
+//        float buttonWidth = instructionsButtonTexture.getWidth() * scale;
+//        float buttonHeight = instructionsButtonTexture.getHeight() * scale;
+//        float buttonX = camera.viewportWidth / 2f - buttonWidth / 2;
+//        float buttonY = 50; // Position the button 50 pixels up from the bottom
+//        batch.draw(instructionsButtonTexture, buttonX, buttonY, buttonWidth, buttonHeight);
+//
+//        // Draw the dino and the text
+//        float centerX = camera.viewportWidth / 2f;
+//        float centerY = camera.viewportHeight / 2f;
+//        batch.draw(dinoTexture, centerX - dinoTexture.getWidth() / 2, centerY + 10 - dinoTexture.getHeight() / 2);
+//        font.draw(batch, "Press Space to Start the Game", centerX - 250, centerY + 100);
+//
+//        batch.end();
+//
+//        // Check for touch input on the instructions button
+//        if (Gdx.input.justTouched()) {
+//            Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+//            camera.unproject(touchPos);
+//            Rectangle buttonBounds = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
+//            if (buttonBounds.contains(touchPos.x, touchPos.y)) {
+//                game.setScreen(new InstructionScreen(game, batch));
+//            }
+//        }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             game.start();
         }
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear the screen
-
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-
-
-
         batch.begin();
-        // Draw the space background
+
+        // Draw the background
         batch.draw(backgroundTexture, 0, 0, camera.viewportWidth, camera.viewportHeight);
 
+        // Scale and draw the instructions button
+        float scale = 0.5f; // Scale factor for the button
+        float buttonWidth = instructionsButtonTexture.getWidth() * scale;
+        float buttonHeight = instructionsButtonTexture.getHeight() * scale;
+        float buttonX = camera.viewportWidth / 2f - buttonWidth / 2;
+        float buttonY = 50; // Position the button 50 pixels up from the bottom
+        batch.draw(instructionsButtonTexture, buttonX, buttonY, buttonWidth, buttonHeight);
 
-
-
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
-
-
+        // Draw the dino and the text
         float centerX = camera.viewportWidth / 2f;
         float centerY = camera.viewportHeight / 2f;
-
-        batch.draw(dinoTexture, centerX - (float) dinoTexture.getWidth() / 2, centerY + 10  - (float) dinoTexture.getHeight() / 2);
+        batch.draw(dinoTexture, centerX - dinoTexture.getWidth() / 2, centerY + 10 - dinoTexture.getHeight() / 2);
         font.draw(batch, "Press Space to Start the Game", centerX - 250, centerY + 100);
 
-
         batch.end();
-        // Check for touch input
+
+        // Check for touch input on the instructions button
         if (Gdx.input.justTouched()) {
             Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(touchPos); // Convert screen coordinates to game world coordinates
-}
+            camera.unproject(touchPos);
+            Rectangle buttonBounds = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
+            if (buttonBounds.contains(touchPos.x, touchPos.y)) {
+                // Instead of directly setting the screen, we call the method in GameEngine
+                game.showInstructions();
+            }
+        }
     }
 
     @Override
     public void resize(int width, int height) {
-//        camera.viewportWidth = 800; // You may adjust this according to your desired initial viewport width
-//        camera.viewportHeight = (float) (900 * height) / width; // Maintain aspect ratio
-//        camera.update();
-        // Calculate new viewport dimensions while maintaining aspect ratio
         float aspectRatio = (float) height / width;
-        float scale = 1f; // Adjust this scale factor if you want to scale your viewport
-        float viewportHeight = 872 * aspectRatio; // The 800 here is your camera's viewport width
-        camera.viewportWidth = 800 * scale;
-        camera.viewportHeight = viewportHeight * scale;
+        camera.viewportWidth = 800;
+        camera.viewportHeight = 872 * aspectRatio;
         camera.update();
-
-
     }
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void hide() {
-
     }
 
     @Override
     public void dispose() {
         generator.dispose();
+        backgroundTexture.dispose();
         dinoTexture.dispose();
+        instructionsButtonTexture.dispose();
         font.dispose();
-
     }
 }
