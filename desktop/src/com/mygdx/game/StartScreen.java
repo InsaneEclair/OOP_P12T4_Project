@@ -10,16 +10,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
+
 import com.badlogic.gdx.math.Vector3;
 
 
 public class StartScreen implements Screen {
     private final GameEngine game;
     private final SpriteBatch batch;
-    private Texture backgroundTexture;
-    private Texture[] planetTextures; // Array to hold multiple planet textures
+    private final Texture backgroundTexture;
+
     private final Texture dinoTexture;
     private final BitmapFont font;
     private final FreeTypeFontGenerator generator;
@@ -48,7 +47,7 @@ public class StartScreen implements Screen {
 
         // Loading textures
         backgroundTexture = new Texture("planetspace.jpg"); // Ensure this path is correct
-        planetTextures = new Texture[]{ new Texture("planetspace.jpg"), };
+
         dinoTexture = new Texture("main-character1.png"); // Ensure this path is correct
     }
 
@@ -97,9 +96,17 @@ public class StartScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        camera.viewportWidth = 800; // You may adjust this according to your desired initial viewport width
-        camera.viewportHeight = (float) (900 * height) / width; // Maintain aspect ratio
+//        camera.viewportWidth = 800; // You may adjust this according to your desired initial viewport width
+//        camera.viewportHeight = (float) (900 * height) / width; // Maintain aspect ratio
+//        camera.update();
+        // Calculate new viewport dimensions while maintaining aspect ratio
+        float aspectRatio = (float) height / width;
+        float scale = 1f; // Adjust this scale factor if you want to scale your viewport
+        float viewportHeight = 872 * aspectRatio; // The 800 here is your camera's viewport width
+        camera.viewportWidth = 800 * scale;
+        camera.viewportHeight = viewportHeight * scale;
         camera.update();
+
 
     }
 
