@@ -37,7 +37,7 @@ public class StartScreen implements Screen {
         parameter.borderColor = Color.BLACK;
         font = generator.generateFont(parameter);
 
-        backgroundTexture = new Texture("planetspace.jpg");
+        backgroundTexture = new Texture("planetspace_v2.jpg");
         dinoTexture = new Texture("main-character1.png");
         instructionsButtonTexture = new Texture("instructions.png");
     }
@@ -101,7 +101,7 @@ public class StartScreen implements Screen {
         float buttonWidth = instructionsButtonTexture.getWidth() * scale;
         float buttonHeight = instructionsButtonTexture.getHeight() * scale;
         float buttonX = camera.viewportWidth / 2f - buttonWidth / 2;
-        float buttonY = 50; // Position the button 50 pixels up from the bottom
+        float buttonY = 110; // Position the button 50 pixels up from the bottom
         batch.draw(instructionsButtonTexture, buttonX, buttonY, buttonWidth, buttonHeight);
 
         // Draw the dino and the text

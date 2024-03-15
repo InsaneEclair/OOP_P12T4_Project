@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.Preferences;
 
 public class GameOverScreen implements Screen {
     private final GameEngine game;
@@ -22,6 +23,9 @@ public class GameOverScreen implements Screen {
     private float imgY;
     private final OrthographicCamera camera;
     private final Dinosaur dinosaur;
+    private int highScore;
+    private int currentHighScore;
+    private Preferences prefs;
 
     public GameOverScreen(final GameEngine game, SpriteBatch batch) {
         this.game = game;
@@ -38,14 +42,20 @@ public class GameOverScreen implements Screen {
         parameter.color = Color.DARK_GRAY;
         font = generator.generateFont(parameter);
 
-
         dinoTexture = new Texture("main-character1.png");
         restartTexture = new Texture("replay_button.png");
+
+        // Load the high score
+        prefs = Gdx.app.getPreferences("DinoGamePreferences");
+        highScore = prefs.getInteger("highScore", 0); // Load the high score, default to 0 if not found
+        currentHighScore = prefs.getInteger("highScore", 0);
     }
 
     @Override
     public void show() {
-
+        // Get the updated high score when showing the screen
+        highScore = prefs.getInteger("highScore", 0);
+        currentHighScore = prefs.getInteger("highScore", 0);
     }
 
     @Override
@@ -55,6 +65,15 @@ public class GameOverScreen implements Screen {
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);
+
+        int currentHighScore = prefs.getInteger("highScore", 0);
+        if (dinosaur.getScore() > currentHighScore) {
+            highScore = dinosaur.getScore();
+            prefs.putInteger("highScore", highScore);
+            prefs.flush();
+        }
+
+        //int currentHighScore = prefs.getInteger("highScore", 0);
 
         batch.begin();
 
@@ -66,8 +85,10 @@ public class GameOverScreen implements Screen {
 
         batch.draw(dinoTexture, centerX - (float) dinoTexture.getWidth() / 2, centerY - 120 - (float) dinoTexture.getHeight() / 2);
         batch.draw(restartTexture, imgX, imgY);
-        font.draw(batch, "Game Over", centerX - 50, centerY + 50);
-        font.draw(batch, "Your score: " + dinosaur.getScore(), centerX - 100, centerY + 10);
+        font.draw(batch, "Game Over", centerX - 50, centerY + 70);
+        font.draw(batch, "Your score: " + dinosaur.getScore(), centerX - 100, centerY + 30);
+//         Draw the high score
+        font.draw(batch, "High Score: " + currentHighScore, centerX - 110, centerY - 10);
 
         // Set up input processor
         Gdx.input.setInputProcessor(new InputAdapter() {

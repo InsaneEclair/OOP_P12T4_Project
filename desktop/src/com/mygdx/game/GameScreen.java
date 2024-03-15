@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import java.util.ArrayList;
-
+import com.badlogic.gdx.Preferences;
 public class GameScreen implements Screen {
     private final GameEngine game;
     private final SpriteBatch batch;
@@ -28,6 +28,8 @@ public class GameScreen implements Screen {
     private final FreeTypeFontGenerator generator;
     private final AIManager aiManager;
     private final CollisionManager collisionManager;
+    private int highScore;
+    private Preferences prefs;
 
     public GameScreen(final GameEngine game, SpriteBatch batch) {
         this.game = game;
@@ -55,10 +57,13 @@ public class GameScreen implements Screen {
 
         this.aiManager = new AIManager(game,this, minTimeBetweenObstacles, maxTimeBetweenObstacles);
         this.collisionManager = new CollisionManager(dinosaur, obstacles, game);
+        prefs = Gdx.app.getPreferences("DinoGamePreferences");
+        highScore = prefs.getInteger("highScore", 0); // Load, default to 0 if not found
     }
 
     @Override
     public void render(float delta) {
+
         if (game.isGameStarted() && game.getGameState() != GameEngine.GameState.GAME_OVER) {
             handleInput();
 
@@ -78,6 +83,18 @@ public class GameScreen implements Screen {
                 // If there's a collision, you might want to change the game state
                 game.setGameState(GameEngine.GameState.GAME_OVER);
                 soundManager.playDeadSound();
+//
+            }
+
+            int newScore = dinosaur.getScore() + (int) (60 * delta); //increment score
+            dinosaur.setScore(newScore);
+//            dinosaur.setScore((int) (dinosaur.getScore() + (200 * delta))); //increment score
+            //dinosaur.setHighScore((int) (dinosaur.getHighScore() + (60 * delta))); //increment score
+            // Update high score if current score is greater
+            if (newScore > highScore) {
+                highScore = newScore;
+                prefs.putInteger("highScore", highScore);
+                prefs.flush(); // Don't forget to save it
             }
 
             batch.begin();
@@ -94,11 +111,21 @@ public class GameScreen implements Screen {
             batch.draw(dinosaur.getTexture(), dinosaur.getPosition().x, dinosaur.getPosition().y);
 
             // Draw score
-            dinosaur.setScore((int) (dinosaur.getScore() + (60 * delta))); //increment score
+
             font.draw(batch, "Score: " + dinosaur.getScore(), camera.viewportWidth - 200, camera.viewportHeight - 20);
+            // Draw current score
+            font.draw(this.batch, "Score: " + newScore, this.camera.viewportWidth - 200.0F, this.camera.viewportHeight - 20.0F);
+
+            // Draw high score
+            font.draw(this.batch, "High Score: " + highScore, this.camera.viewportWidth - 250.0F, this.camera.viewportHeight - 40.0F);
 
             batch.end();
         }
+
+//        if (game.getGameState() == GameEngine.GameState.GAME_OVER) {
+//
+//        }
+
     }
 
     public float getViewportWidth() {
@@ -156,8 +183,14 @@ public class GameScreen implements Screen {
         soundManager.playScoreUpSound();
     }
 
+//    public void resetHighScore() {
+//        prefs.putInteger("highScore", 0);
+//        prefs.flush();
+//    }
+
     @Override
     public void dispose() {
+//        resetHighScore(); // Reset high score when disposing the game screen
         // Dispose of other resources...
         soundManager.dispose();
         dinosaur.dispose();
@@ -168,5 +201,9 @@ public class GameScreen implements Screen {
         for (Obstacle obstacle : obstacles) {
             obstacle.dispose();
         }
+//        batch.dispose();
+//        Preferences prefs = Gdx.app.getPreferences("DinoGamePreferences");
+//        prefs.putInteger("highScore", 0);
+//        prefs.flush();
     }
 }

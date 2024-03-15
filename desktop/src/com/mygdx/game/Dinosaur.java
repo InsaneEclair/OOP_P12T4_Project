@@ -17,6 +17,8 @@ public class Dinosaur {
     private int score;
     private final int groundLevel;
 
+    private int highScore;
+
     public Dinosaur(int x, int groundLevel) {
         //position = new Vector2(x, 50);
         this.groundLevel = groundLevel; // Store the ground level
@@ -29,6 +31,7 @@ public class Dinosaur {
         bounds = new Rectangle(x, groundLevel, standingTexture.getWidth(), standingTexture.getHeight());
 
         score = 0;
+
     }
 /* Not in use, either use this to increase score by deleting the current 1 or remove this
     public void increaseScore() {
@@ -42,6 +45,7 @@ public class Dinosaur {
     public int getScore() {
         return score;
     }
+
 
     public void update(float dt) {
         if (position.y > 0 || velocity.y > 0) {
