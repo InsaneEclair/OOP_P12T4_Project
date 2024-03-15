@@ -13,6 +13,11 @@ public class GameEngine extends Game implements InputProcessor{
     private GameState gameState;
     private ScreenManager screenManager;
 
+    // Method to increment the score by a specified amount
+    public void incrementScore(int amount) {
+        dinosaur.setScore(dinosaur.getScore() + amount);
+    }
+
     // Method to handle back transition from INSTRUCTIONS to START
     public void backToStart() {
         if (gameState == GameState.INSTRUCTIONS) {

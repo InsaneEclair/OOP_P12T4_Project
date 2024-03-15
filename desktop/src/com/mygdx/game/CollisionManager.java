@@ -21,11 +21,14 @@ public class CollisionManager {
             Rectangle obstaclesBounds = obstacles.getBounds();
 
             if (dinosaurBounds.overlaps(obstaclesBounds)) {
-                gameEngine.end(); // Use the game engine to transition to the GameOverScreen
-                return true; // Collision occurred
+                if (obstacles instanceof Star) {
+                    gameEngine.incrementScore(100); // increase total score by 100
+                } else {
+                    gameEngine.end(); // Transition to GameOverScreen for other obstacles
+                    return true; // Collision occurred
+                }
             }
         }
         return false;
     }
-
 }

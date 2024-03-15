@@ -17,8 +17,6 @@ public class Dinosaur {
     private int score;
     private final int groundLevel;
 
-    private int highScore;
-
     public Dinosaur(int x, int groundLevel) {
         //position = new Vector2(x, 50);
         this.groundLevel = groundLevel; // Store the ground level

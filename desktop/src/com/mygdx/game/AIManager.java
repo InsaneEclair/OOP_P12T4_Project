@@ -59,14 +59,22 @@ public class AIManager {
     }
 
     private void spawnObstacle() {
-        int obstacleType = random.nextInt(gameScreen.getObstacleTextures().length + 1);
+        int obstacleType = random.nextInt(3); // Generate a random number between 0 and 2 (inclusive) for the obstacle type
 
         Obstacle newObstacle;
-        if (obstacleType < gameScreen.getObstacleTextures().length) {
-            String textureName = gameScreen.getObstacleTextures()[obstacleType];
-            newObstacle = new Cactus(gameScreen.getViewportWidth(), gameScreen.getGroundYPosition(), textureName, obstacleSpeed);
-        } else {
-            newObstacle = new Balloon(gameScreen.getViewportWidth(), gameScreen.getAirYPosition(), obstacleSpeed);
+        switch (obstacleType) {
+            case 0:
+                String cactusTextureName = gameScreen.getObstacleTextures()[random.nextInt(gameScreen.getObstacleTextures().length)];
+                newObstacle = new Cactus(gameScreen.getViewportWidth(), gameScreen.getGroundYPosition(), cactusTextureName, obstacleSpeed);
+                break;
+            case 1:
+                newObstacle = new Balloon(gameScreen.getViewportWidth(), gameScreen.getAirYPosition(), obstacleSpeed);
+                break;
+            case 2:
+                newObstacle = new Star(gameScreen.getViewportWidth(), gameScreen.getGroundYPosition(), obstacleSpeed);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected obstacle type: " + obstacleType);
         }
         gameScreen.addObstacle(newObstacle);
     }

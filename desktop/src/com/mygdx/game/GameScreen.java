@@ -80,10 +80,9 @@ public class GameScreen implements Screen {
             camera.update();
             batch.setProjectionMatrix(camera.combined);
             if (collisionManager.checkCollision()) {
-                // If there's a collision, you might want to change the game state
+                // If there's a collision with cactus or balloon, change the game state
                 game.setGameState(GameEngine.GameState.GAME_OVER);
                 soundManager.playDeadSound();
-//
             }
 
             int newScore = dinosaur.getScore() + (int) (60 * delta); //increment score
@@ -121,11 +120,6 @@ public class GameScreen implements Screen {
 
             batch.end();
         }
-
-//        if (game.getGameState() == GameEngine.GameState.GAME_OVER) {
-//
-//        }
-
     }
 
     public float getViewportWidth() {
