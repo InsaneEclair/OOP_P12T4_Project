@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -18,7 +19,6 @@ public class Dinosaur {
     private final int groundLevel;
 
     public Dinosaur(int x, int groundLevel) {
-        //position = new Vector2(x, 50);
         this.groundLevel = groundLevel; // Store the ground level
         position = new Vector2(x, groundLevel); // Adjusted position to stand on the land
 
@@ -29,21 +29,7 @@ public class Dinosaur {
         bounds = new Rectangle(x, groundLevel, standingTexture.getWidth(), standingTexture.getHeight());
 
         score = 0;
-
     }
-/* Not in use, either use this to increase score by deleting the current 1 or remove this
-    public void increaseScore() {
-        this.score++;
-    }
-*/
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
 
     public void update(float dt) {
         if (position.y > 0 || velocity.y > 0) {
@@ -84,6 +70,10 @@ public class Dinosaur {
             bounds.setWidth(standingTexture.getWidth());
         }
     }
+
+    public void setScore(int score) {this.score = score;}
+
+    public int getScore() {return score;}
 
     public boolean isDucking() { //public getter methods for player controller
         return isDucking;
