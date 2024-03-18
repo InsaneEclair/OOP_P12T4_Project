@@ -67,37 +67,44 @@ public class GameScreen implements Screen {
         if (game.isGameStarted() && game.getGameState() != GameEngine.GameState.GAME_OVER) {
             handleInput();
 
-            // Pause game
+            // Existing game pause logic
             if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
                 game.pause();
             }
 
+            // Clear the screen
             Gdx.gl.glClearColor(1, 1, 1, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+            // Update game entities
             dinosaur.update(delta);
-            aiManager.update(delta); // This will handle obstacle spawning
+            aiManager.update(delta); // Handles obstacle spawning
             camera.update();
             batch.setProjectionMatrix(camera.combined);
+
+            // Collision check
             if (collisionManager.checkCollision()) {
-                // If there's a collision with cactus or balloon, change the game state
                 game.setGameState(GameEngine.GameState.GAME_OVER);
                 soundManager.playDeadSound();
             }
 
-            int newScore = dinosaur.getScore() + (int) (60 * delta); //increment score
+            // Score update logic based on delta time
+            float scoreIncrement = 60 * delta;
+            int newScore = dinosaur.getScore() + (int)scoreIncrement;
             dinosaur.setScore(newScore);
-//            dinosaur.setScore((int) (dinosaur.getScore() + (200 * delta))); //increment score
-            //dinosaur.setHighScore((int) (dinosaur.getHighScore() + (60 * delta))); //increment score
-            // Update high score if current score is greater
+            Gdx.app.log("Score", "Current score: " + newScore);
+            Gdx.app.log("Delta Time", "Delta: " + delta);
+
+            // Check and update high score
             if (newScore > highScore) {
                 highScore = newScore;
                 prefs.putInteger("highScore", highScore);
-                prefs.flush(); // Don't forget to save it
+                prefs.flush();
             }
 
             batch.begin();
-            // Always use already loaded textures. Loading textures in render() is inefficient and can lead to performance issues.
+
+            // Draw background
             batch.draw(background, 0, 50, Gdx.graphics.getWidth(), background.getHeight());
 
             // Draw obstacles
@@ -109,14 +116,9 @@ public class GameScreen implements Screen {
             // Draw dinosaur
             batch.draw(dinosaur.getTexture(), dinosaur.getPosition().x, dinosaur.getPosition().y);
 
-            // Draw score
-
+            // Draw score & highscore
             font.draw(batch, "Score: " + dinosaur.getScore(), camera.viewportWidth - 200, camera.viewportHeight - 20);
-            // Draw current score
-            font.draw(this.batch, "Score: " + newScore, this.camera.viewportWidth - 200.0F, this.camera.viewportHeight - 20.0F);
-
-            // Draw high score
-            font.draw(this.batch, "High Score: " + highScore, this.camera.viewportWidth - 250.0F, this.camera.viewportHeight - 40.0F);
+            font.draw(batch, "High Score: " + highScore, camera.viewportWidth - 250, camera.viewportHeight - 40);
 
             batch.end();
         }
@@ -176,7 +178,6 @@ public class GameScreen implements Screen {
     public void playScoreUpSound() {
         soundManager.playScoreUpSound();
     }
-
 //    public void resetHighScore() {
 //        prefs.putInteger("highScore", 0);
 //        prefs.flush();
