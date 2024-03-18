@@ -10,6 +10,8 @@ public class DesktopLauncher {
 
 		config.setTitle("Google Chrome's Dino Game");
 		config.setWindowedMode(810, 480);
+		config.setForegroundFPS(60);
+		config.setIdleFPS(60);
 		new Lwjgl3Application(new GameEngine(), config);
 	}
 }
