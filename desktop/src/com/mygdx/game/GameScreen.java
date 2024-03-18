@@ -30,6 +30,9 @@ public class GameScreen implements Screen {
     private final CollisionManager collisionManager;
     private int highScore;
     private Preferences prefs;
+    private float[] modifygravityValues = new float[]{-850,-800,-700,-600,-500};
+    private int lastGravityChangeScore = 0;
+    private float currentGravity = -850;
 
     public GameScreen(final GameEngine game, SpriteBatch batch) {
         this.game = game;
@@ -66,6 +69,7 @@ public class GameScreen implements Screen {
 
         if (game.isGameStarted() && game.getGameState() != GameEngine.GameState.GAME_OVER) {
             handleInput();
+            updateGravityBasedOnScore();
 
             // Existing game pause logic
             if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
@@ -119,8 +123,22 @@ public class GameScreen implements Screen {
             // Draw score & highscore
             font.draw(batch, "Score: " + dinosaur.getScore(), camera.viewportWidth - 200, camera.viewportHeight - 20);
             font.draw(batch, "High Score: " + highScore, camera.viewportWidth - 250, camera.viewportHeight - 40);
+            font.draw(batch, "Gravity: " + currentGravity, 20, Gdx.graphics.getHeight() - 20);
 
             batch.end();
+        }
+    }
+
+    private void updateGravityBasedOnScore() {
+        int score = dinosaur.getScore();
+        if (score / 300 > lastGravityChangeScore / 300) {
+            lastGravityChangeScore = score;
+            int index = (score / 300) % modifygravityValues.length;
+            currentGravity = modifygravityValues[index];
+            dinosaur.setGravity(modifygravityValues[index]);
+
+            // Print the current gravity to the console
+            System.out.println("Gravity changed to: " + modifygravityValues[index]);
         }
     }
 
@@ -157,7 +175,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-
+        soundManager.playRoundStartSound();
     }
 
     @Override

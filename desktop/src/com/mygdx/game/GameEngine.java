@@ -12,6 +12,7 @@ public class GameEngine extends Game implements InputProcessor{
     private boolean gameStarted;
     private GameState gameState;
     private ScreenManager screenManager;
+    private SoundManager soundManager;
 
     // Method to increment the score by a specified amount
     public void incrementScore(int amount) {
@@ -104,6 +105,9 @@ public class GameEngine extends Game implements InputProcessor{
         screenManager.goToState(gameState);
         // Set this class as the input processor to handle key inputs
         Gdx.input.setInputProcessor(this);
+
+        this.soundManager = new SoundManager();
+        this.soundManager.playMenuSound();
     }
 
     public void start() {
@@ -112,6 +116,7 @@ public class GameEngine extends Game implements InputProcessor{
             gameStarted = true;
             gameState = GameState.RUNNING; // Update gameState to RUNNING
             screenManager.goToState(GameState.RUNNING);
+            soundManager.stopMenuSound();
         }
     }
 
@@ -125,20 +130,24 @@ public class GameEngine extends Game implements InputProcessor{
 
     public void pause() {
         screenManager.goToState(GameState.PAUSED);
+        //soundManager.pauseRoundStartSound();
     }
 
     public void resume() {
         screenManager.goToState(GameState.RUNNING);
+        //soundManager.resumeRoundStartSound();
     }
 
     public void end() {
         screenManager.goToState(GameState.GAME_OVER);
+        //soundManager.stopRoundStartSound();
     }
 
     public void restart() {
         // reset game variables
         dinosaur.setScore(0);
         screenManager.goToState(GameState.RUNNING);
+        soundManager.playRoundStartSound();
     }
 
     @Override
