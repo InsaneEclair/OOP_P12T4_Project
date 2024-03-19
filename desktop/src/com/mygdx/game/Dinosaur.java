@@ -7,7 +7,9 @@ import com.badlogic.gdx.math.Vector2;
 public class Dinosaur {
     private Texture texture; //Texture being displayed
     private final Texture standingTexture; // When Standing
+    private final Texture standingTexture2;
     private final Texture duckingTexture; //  When ducking
+    private final Texture duckingTexture2;
     private final Vector2 position;
     private final Vector2 velocity;
     private static final int GRAVITY = -800;
@@ -17,6 +19,13 @@ public class Dinosaur {
     private boolean isDucking = false;
     private int score;
     private final int groundLevel;
+    private float runningTimer = 0; // Timer to track animation progress
+    private float duckingTimer = 0; // Timer to track animation progress
+
+    private static final float RUNNING_ANIMATION_SPEED = 0.1f; // Adjust speed as needed (lower for faster animation)
+    private static final float DUCKING_ANIMATION_SPEED = 0.1f; // Adjust speed as needed (lower for faster animation)
+
+
 
     public Dinosaur(int x, int groundLevel) {
         this.groundLevel = groundLevel; // Store the ground level
@@ -24,7 +33,9 @@ public class Dinosaur {
 
         velocity = new Vector2(0, 0);
         standingTexture = new Texture("main-character1_dark.png");
+        standingTexture2 = new Texture("main-character2_dark.png");
         duckingTexture = new Texture("main-character5_dark.png");
+        duckingTexture2 = new Texture("main-character6_dark.png");
         texture = standingTexture; // Default to standing texture
         bounds = new Rectangle(x, groundLevel, standingTexture.getWidth(), standingTexture.getHeight());
 
@@ -43,6 +54,39 @@ public class Dinosaur {
             velocity.y = 0; // Reset the vertical velocity
         }
         bounds.setPosition(position.x, position.y); // Ensure bounds are updated with position
+
+        // Update ducking animation timer if currently ducking
+        if (isDucking) {
+            runningTimer = 0;
+            duckingTimer += dt;
+
+            // Check if timer exceeds animation speed threshold
+            if (duckingTimer >= DUCKING_ANIMATION_SPEED) {
+                duckingTimer = 0; // Reset timer
+
+                // Alternate between ducking textures
+                if (texture == duckingTexture) {
+                    texture = duckingTexture2;
+                } else {
+                    texture = duckingTexture;
+                }
+            }
+        } else {
+            duckingTimer = 0; // Reset timer if not ducking
+            runningTimer += dt;
+
+            // Check if timer exceeds animation speed threshold
+            if (runningTimer >= RUNNING_ANIMATION_SPEED) {
+                runningTimer = 0; // Reset timer
+
+                // Alternate between standing textures
+                if (texture == standingTexture) {
+                    texture = standingTexture2;
+                } else {
+                    texture = standingTexture;
+                }
+            }
+        }
     }
 
     public void jump() {
