@@ -71,7 +71,11 @@ public class AIManager {
                 newObstacle = new Balloon(gameScreen.getViewportWidth(), gameScreen.getAirYPosition(), obstacleSpeed);
                 break;
             case 2:
-                newObstacle = new Star(gameScreen.getViewportWidth(), gameScreen.getGroundYPosition(), obstacleSpeed);
+                float minHeight = gameScreen.getGroundYPosition();
+                float maxHeight = gameScreen.getViewportHeight();
+                float randomHeight = random.nextFloat() * (maxHeight - minHeight) + minHeight;
+                String starTextureName = gameScreen.getStarTextures()[random.nextInt(gameScreen.getStarTextures().length)];
+                newObstacle = new Star(gameScreen.getViewportWidth(), randomHeight, starTextureName, obstacleSpeed);
                 break;
             default:
                 throw new IllegalStateException("Unexpected obstacle type: " + obstacleType);

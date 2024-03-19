@@ -20,6 +20,8 @@ public class GameScreen implements Screen {
     private final Texture background;
     private final ArrayList<Obstacle> obstacles;
     private final String[] obstacleTextures = new String[]{"cactus1.png", "cactus2.png"};
+    private final String[] starTextures = new String[]{"smallstar.png", "bigstar.png"};
+
     private static final float groundYPosition = 50; // Example value
     private static final float airYPosition = 85; // Example value
     private final ControlsManager controlsManager;
@@ -146,6 +148,10 @@ public class GameScreen implements Screen {
         return camera.viewportWidth;
     }
 
+    public float getViewportHeight() {
+        return camera.viewportHeight;
+    }
+
     public void addObstacle(Obstacle obstacle) {
         obstacles.add(obstacle);
     }
@@ -153,6 +159,8 @@ public class GameScreen implements Screen {
     public String[] getObstacleTextures() {
         return obstacleTextures;
     }
+
+    public String[] getStarTextures() {return starTextures;}
 
     public float getAirYPosition() {
         return airYPosition;
