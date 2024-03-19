@@ -20,6 +20,12 @@ public class GameScreen implements Screen {
     private final Texture background;
     private final Texture land;
     private final String[] planetNames = new String[]{"Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"};
+    private final float[] jumpVelocities = {480, 380, 380, 490, 350, 370, 390, 360};
+    private final String[] realLifeGravityValues = {"0.38 g", "0.904 g", "1 g", "0.376 g", "2.528 g", "1.065 g", "0.886 g", "1.14 g"};
+    private final float[] modifygravityValues = new float[]{-300,-750,-770,-300,-850,-700,-300,-800};
+    private float currentGravity = -300;
+    private float currentVelocity = 600;
+
     private final Texture[] planetTextures;
     private int currentPlanetIndex;
     private int scoreSinceLastPlanetChange;
@@ -36,9 +42,8 @@ public class GameScreen implements Screen {
     private final CollisionManager collisionManager;
     private int highScore;
     private final Preferences prefs;
-    private final float[] modifygravityValues = new float[]{-850,-800,-700,-600,-500};
-    private int lastGravityChangeScore = 0;
-    private float currentGravity = -850;
+
+
 
     public GameScreen(final GameEngine game, SpriteBatch batch) {
         this.game = game;
@@ -84,7 +89,7 @@ public class GameScreen implements Screen {
 
         if (game.isGameStarted() && game.getGameState() != GameEngine.GameState.GAME_OVER) {
             handleInput();
-            updateGravityBasedOnScore();
+            updateGravityAndVelocityBasedOnPlanet();
 
             // Existing game pause logic
             if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
@@ -139,6 +144,10 @@ public class GameScreen implements Screen {
             String welcomeMessage = "Welcome to " + planetNames[currentPlanetIndex] + "!";
             font.draw(batch, welcomeMessage, 20, camera.viewportHeight - 20);
 
+            // Display real-life gravity value for the current planet
+            String gravityText = "Real-life Gravity: " + realLifeGravityValues[currentPlanetIndex];
+            font.draw(batch, gravityText, 20, camera.viewportHeight - 45);
+
             // Change planet every defined number of points
             int rotation = 1000;
             int currentScore = dinosaur.getScore();
@@ -162,24 +171,26 @@ public class GameScreen implements Screen {
             // Draw score, high score and gravity
             font.draw(batch, "Score: " + dinosaur.getScore(), camera.viewportWidth - 200, camera.viewportHeight - 20);
             font.draw(batch, "High Score: " + highScore, camera.viewportWidth - 250, camera.viewportHeight - 40);
-            font.draw(batch, "Gravity: " + currentGravity, 20, camera.viewportHeight - 40);
+            //font.draw(batch, "Gravity: " + currentGravity, 20, camera.viewportHeight - 40); testing purposes
 
             batch.end();
         }
     }
 
-    private void updateGravityBasedOnScore() {
-        int score = dinosaur.getScore();
-        if (score / 300 > lastGravityChangeScore / 300) {
-            lastGravityChangeScore = score;
-            int index = (score / 300) % modifygravityValues.length;
-            currentGravity = modifygravityValues[index];
-            dinosaur.setGravity(modifygravityValues[index]);
+    private void updateGravityAndVelocityBasedOnPlanet() {
+        // Use currentPlanetIndex to set gravity and velocity
+        currentGravity = modifygravityValues[currentPlanetIndex];
+        dinosaur.setGravity(currentGravity);
 
-            // Print the current gravity to the console
-            System.out.println("Gravity changed to: " + modifygravityValues[index]);
-        }
+        currentVelocity = jumpVelocities[currentPlanetIndex];
+        dinosaur.setJumpVelocity(currentVelocity);
+
+        // Optionally log these changes for debugging
+        System.out.println("Updated gravity to: " + currentGravity + " for " + planetNames[currentPlanetIndex]);
+        System.out.println("Updated velocity to: " + currentVelocity + " for " + planetNames[currentPlanetIndex]);
     }
+
+
 
     public float getViewportWidth() {
         return camera.viewportWidth;
