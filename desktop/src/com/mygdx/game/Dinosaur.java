@@ -22,8 +22,8 @@ public class Dinosaur {
         position = new Vector2(x, groundLevel); // Adjusted position to stand on the land
 
         velocity = new Vector2(0, 0);
-        standingTexture = new Texture("main-character1.png");
-        duckingTexture = new Texture("main-character5.png");
+        standingTexture = new Texture("main-character1_dark.png");
+        duckingTexture = new Texture("main-character5_dark.png");
         texture = standingTexture; // Default to standing texture
         bounds = new Rectangle(x, groundLevel, standingTexture.getWidth(), standingTexture.getHeight());
 
