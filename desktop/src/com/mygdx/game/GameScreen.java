@@ -58,7 +58,7 @@ public class GameScreen implements Screen {
         PlayerController playerController = new PlayerController(dinosaur, soundManager);
         controlsManager = new ControlsManager(playerController);
 
-        background = new Texture(Gdx.files.internal("background2.png"));
+        background = new Texture(Gdx.files.internal("background.png"));
         land = new Texture(Gdx.files.internal("land1_dark.png"));
 
         String[] planetTextureNames = new String[]{"mercury.png", "venus.png", "earth.png", "mars.png", "jupiter.png", "saturn.png", "uranus.png", "neptune.png"};
