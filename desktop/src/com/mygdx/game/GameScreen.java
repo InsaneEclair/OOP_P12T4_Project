@@ -19,15 +19,13 @@ public class GameScreen implements Screen {
     private final Dinosaur dinosaur;
     private final Texture background;
     private final Texture land;
+    private final String[] planetNames = new String[]{"Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"};
     private final Texture[] planetTextures;
     private int currentPlanetIndex;
     private int scoreSinceLastPlanetChange;
-
     private final ArrayList<Obstacle> obstacles;
-    private final String[] obstacleTextures = new String[]{"cactus1.png", "cactus2.png"};
-    private final String[] starTextures = new String[]{"smallstar.png", "bigstar.png"};
-
     private final String[] obstacleTextures = new String[]{"cactus1_dark.png", "cactus2_dark.png"};
+    private final String[] starTextures = new String[]{"smallstar.png", "bigstar.png"};
     private static final float groundYPosition = 50; // Example value
     private static final float airYPosition = 85; // Example value
     private final ControlsManager controlsManager;
@@ -37,8 +35,8 @@ public class GameScreen implements Screen {
     private final AIManager aiManager;
     private final CollisionManager collisionManager;
     private int highScore;
-    private Preferences prefs;
-    private float[] modifygravityValues = new float[]{-850,-800,-700,-600,-500};
+    private final Preferences prefs;
+    private final float[] modifygravityValues = new float[]{-850,-800,-700,-600,-500};
     private int lastGravityChangeScore = 0;
     private float currentGravity = -850;
 
@@ -60,16 +58,16 @@ public class GameScreen implements Screen {
         PlayerController playerController = new PlayerController(dinosaur, soundManager);
         controlsManager = new ControlsManager(playerController);
 
+        background = new Texture(Gdx.files.internal("background2.png"));
         land = new Texture(Gdx.files.internal("land1_dark.png"));
-        background = new Texture(Gdx.files.internal("background.png"));
-        String[] planetTextureNames = new String[]{"sun.png", "mercury.png", "venus.png", "earth.png", "mars.png", "jupiter.png", "saturn.png", "uranus.png", "neptune.png"};
+
+        String[] planetTextureNames = new String[]{"mercury.png", "venus.png", "earth.png", "mars.png", "jupiter.png", "saturn.png", "uranus.png", "neptune.png"};
         planetTextures = new Texture[planetTextureNames.length];
         for (int i = 0; i < planetTextures.length; i++) {
             planetTextures[i] = new Texture(Gdx.files.internal(planetTextureNames[i]));
         }
         currentPlanetIndex = 0;
         scoreSinceLastPlanetChange = 0;
-
 
         obstacles = new ArrayList<>();
         float minTimeBetweenObstacles = 1.0f; // Minimum time in seconds until the next obstacle spawns
@@ -136,14 +134,20 @@ public class GameScreen implements Screen {
             int planetHeight = planetTextures[currentPlanetIndex].getHeight() * 4;
             float centerX = camera.viewportWidth / 2f - planetWidth / 2f;
             float centerY = camera.viewportHeight / 2f - planetHeight / 2f;
+
             batch.draw(planetTextures[currentPlanetIndex], centerX, centerY, planetWidth, planetHeight);
+            String welcomeMessage = "Welcome to " + planetNames[currentPlanetIndex] + "!";
+            font.draw(batch, welcomeMessage, 20, camera.viewportHeight - 20);
 
             // Change planet every defined number of points
             int rotation = 1000;
             int currentScore = dinosaur.getScore();
             if (currentScore / rotation > scoreSinceLastPlanetChange) {
                 scoreSinceLastPlanetChange = currentScore / rotation; // Update the last score tracker
-                currentPlanetIndex = Math.min(currentPlanetIndex + 1, planetTextures.length - 1);
+//                currentPlanetIndex = Math.min(currentPlanetIndex + 1, planetTextures.length - 1); // stop at the last planet
+                currentPlanetIndex = (currentPlanetIndex + 1) % planetTextures.length; // loop around
+                welcomeMessage = "Welcome to " + planetNames[currentPlanetIndex] + "!";
+                font.draw(batch, welcomeMessage, 20, camera.viewportHeight - 20);
             }
 
             // Draw obstacles
@@ -155,10 +159,10 @@ public class GameScreen implements Screen {
             // Draw dinosaur
             batch.draw(dinosaur.getTexture(), dinosaur.getPosition().x, dinosaur.getPosition().y);
 
-            // Draw score & highscore
+            // Draw score, high score and gravity
             font.draw(batch, "Score: " + dinosaur.getScore(), camera.viewportWidth - 200, camera.viewportHeight - 20);
             font.draw(batch, "High Score: " + highScore, camera.viewportWidth - 250, camera.viewportHeight - 40);
-            font.draw(batch, "Gravity: " + currentGravity, 20, Gdx.graphics.getHeight() - 20);
+            font.draw(batch, "Gravity: " + currentGravity, 20, camera.viewportHeight - 40);
 
             batch.end();
         }
@@ -216,7 +220,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        soundManager.playRoundStartSound();
+
     }
 
     @Override

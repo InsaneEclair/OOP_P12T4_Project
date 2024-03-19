@@ -1,4 +1,4 @@
-package com.mygdx.game;
+    package com.mygdx.game;
 
 import java.util.Random;
 
@@ -32,9 +32,9 @@ public class AIManager {
     public void update(float delta) {
         int currentScore = gameEngine.getDinosaur().getScore();
 
-        // Check if the score has reached a new 200-point increment
-        if (currentScore / 200 > lastScoreIncrement) {
-            lastScoreIncrement = currentScore / 200; // Update the last increment tracker
+        // Check if the score has reached a new 1000-point increment
+        if (currentScore / 1000 > lastScoreIncrement) {
+            lastScoreIncrement = currentScore / 1000; // Update the last increment tracker
 
             // Only increase speed if it does not exceed the maximum
             // Example max speed

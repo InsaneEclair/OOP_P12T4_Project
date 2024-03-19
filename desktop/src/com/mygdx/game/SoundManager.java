@@ -9,8 +9,8 @@ public class SoundManager {
     private final Sound scoreUpSound;
     private final Sound deadSound;
     private final Sound starSound;
-    private Mp3.Music menuSound;
-    private Mp3.Music roundstartSound;
+    private final Mp3.Music menuSound;
+    private final Mp3.Music roundstartSound;
 
     public SoundManager() {
         jumpSound = Gdx.audio.newSound(Gdx.files.internal("jump1.wav"));
@@ -24,7 +24,7 @@ public class SoundManager {
 
         roundstartSound = (Mp3.Music) Gdx.audio.newMusic(Gdx.files.internal("ingamemusic.mp3"));
         roundstartSound.setLooping(true);
-        roundstartSound.setVolume(0.5f);
+        roundstartSound.setVolume(0.2f);
     }
 
     public void playJumpSound() {

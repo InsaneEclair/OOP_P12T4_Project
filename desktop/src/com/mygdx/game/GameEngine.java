@@ -102,12 +102,13 @@ public class GameEngine extends Game implements InputProcessor{
         this.gameStarted = true;
         this.gameState = GameState.START;
         this.screenManager = new ScreenManager(this, batch);
-        screenManager.goToState(gameState);
+        this.soundManager = new SoundManager();
+
         // Set this class as the input processor to handle key inputs
         Gdx.input.setInputProcessor(this);
 
-        this.soundManager = new SoundManager();
-        this.soundManager.playMenuSound();
+        screenManager.goToState(gameState);
+        soundManager.playMenuSound();
     }
 
     public void start() {
@@ -117,6 +118,7 @@ public class GameEngine extends Game implements InputProcessor{
             gameState = GameState.RUNNING; // Update gameState to RUNNING
             screenManager.goToState(GameState.RUNNING);
             soundManager.stopMenuSound();
+            soundManager.playRoundStartSound();
         }
     }
 
@@ -130,17 +132,17 @@ public class GameEngine extends Game implements InputProcessor{
 
     public void pause() {
         screenManager.goToState(GameState.PAUSED);
-        //soundManager.pauseRoundStartSound();
+        soundManager.pauseRoundStartSound();
     }
 
     public void resume() {
         screenManager.goToState(GameState.RUNNING);
-        //soundManager.resumeRoundStartSound();
+        soundManager.resumeRoundStartSound();
     }
 
     public void end() {
         screenManager.goToState(GameState.GAME_OVER);
-        //soundManager.stopRoundStartSound();
+        soundManager.stopRoundStartSound();
     }
 
     public void restart() {
@@ -177,95 +179,4 @@ public class GameEngine extends Game implements InputProcessor{
         return dinosaur;
     }
 }
-
-
-/*
-package com.mygdx.game;
-
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.Game;
-
-public class GameEngine extends Game {
-    private SpriteBatch batch;
-    private Dinosaur dinosaur;
-    private boolean gameStarted;
-    private GameState gameState;
-    private ScreenManager screenManager;
-
-    public enum GameState {
-        START,
-        RUNNING,
-        PAUSED,
-        GAME_OVER
-    }
-
-    @Override
-    public void create() {
-        this.batch = new SpriteBatch();
-        this.dinosaur = new Dinosaur(0,50);
-        this.gameStarted = true;
-        this.gameState = GameState.START;
-        this.screenManager = new ScreenManager(this, batch);
-        screenManager.goToState(gameState);
-    }
-
-    public void start() {
-        if (!gameStarted) {
-            gameStarted = true;
-            screenManager.goToState(GameState.START);
-        } else {
-            screenManager.goToState(GameState.RUNNING);
-        }
-    }
-
-    public void pause() {
-        screenManager.goToState(GameState.PAUSED);
-    }
-
-    public void resume() {
-        screenManager.goToState(GameState.RUNNING);
-    }
-
-    public void end() {
-        screenManager.goToState(GameState.GAME_OVER);
-    }
-
-    public void restart() {
-        // reset game variables
-        dinosaur.setScore(0);
-        screenManager.goToState(GameState.RUNNING);
-    }
-
-    @Override
-    public void render() {
-        if (!gameStarted) {
-            start();
-        }
-        super.render(); // This will render the current screen
-    }
-
-    @Override
-    public void dispose() {
-        batch.dispose();
-    }
-
-    public boolean isGameStarted() {
-        return gameStarted;
-    }
-
-    public GameState getGameState() {
-        return gameState;
-    }
-
-    public void setGameState(GameState state) {
-        gameState = state;
-    }
-
-    public Dinosaur getDinosaur() {
-        return dinosaur;
-    }
-}
-
-
- */
 
