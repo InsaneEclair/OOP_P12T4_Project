@@ -2,8 +2,16 @@
 package com.mygdx.game;
 
 public class Star extends Obstacle {
-    public Star(float x, float y, float obstacleSpeed) {
-        super(x, y, "star_dark.png");
-        setMOVEMENT((int) obstacleSpeed); // Ensure MOVEMENT is not final and can be set
+
+    private final String textureFileName;
+
+    public Star(float x, float y, String textureFileName, float speed) {
+        super(x, y, textureFileName);
+        this.setSpeed(speed); // Assign speed to a class field or directly to the movement logic
+        this.textureFileName = textureFileName;
+    }
+
+    public String getTextureFileName() {
+        return textureFileName;
     }
 }

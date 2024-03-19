@@ -11,6 +11,7 @@ public class Dinosaur {
     private final Vector2 position;
     private final Vector2 velocity;
     private static final int GRAVITY = -800;
+    private float modify_gravity = -800;
     private static final int MOVEMENT = 0;
     private final Rectangle bounds;
     private boolean isDucking = false;
@@ -32,7 +33,7 @@ public class Dinosaur {
 
     public void update(float dt) {
         if (position.y > 0 || velocity.y > 0) {
-            velocity.add(0, GRAVITY * dt);
+            velocity.add(0, modify_gravity * dt);
         }
 
         position.add(MOVEMENT * dt, velocity.y * dt);
@@ -46,7 +47,7 @@ public class Dinosaur {
 
     public void jump() {
         if (position.y == groundLevel && !isDucking) { // Simple check to prevent double jumping
-            velocity.y = 400; // Adjust the jump height as needed
+            velocity.y = 600; // Adjust the jump height as needed
         }
     }
 
@@ -70,6 +71,9 @@ public class Dinosaur {
         }
     }
 
+    public void setGravity(float newGravity) {
+        this.modify_gravity = newGravity;
+    }
     public void setScore(int score) {this.score = score;}
 
     public int getScore() {return score;}

@@ -28,7 +28,13 @@ public class CollisionManager {
 
             if (dinosaurBounds.overlaps(obstacleBounds)) {
                 if (obstacle instanceof Star) {
-                    gameEngine.incrementScore(100);
+                        Star star = (Star) obstacle;
+                        String textureFileName = star.getTextureFileName();
+                        if(textureFileName.equals("smallstar.png")) {
+                            gameEngine.incrementScore(100);
+                        } else if (textureFileName.equals("bigstar.png")) {
+                            gameEngine.incrementScore(500);
+                        }
                     soundManager.playStarSound();
                     iterator.remove();
                 } else {

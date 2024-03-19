@@ -136,7 +136,7 @@ public class InstructionScreen implements Screen {
         camera.setToOrtho(false, 800, 320);
 
         // Load the full instruction image
-        instructionImage = new Texture("fullInstruct.png"); // Replace with your instruction image file name
+        instructionImage = new Texture("final_instruction.png"); // Replace with your instruction image file name
     }
 
     @Override
