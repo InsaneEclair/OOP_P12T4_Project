@@ -82,6 +82,7 @@ public class GameScreen implements Screen {
         this.collisionManager = new CollisionManager(dinosaur, obstacles, game);
         prefs = Gdx.app.getPreferences("DinoGamePreferences");
         highScore = prefs.getInteger("highScore", 0); // Load, default to 0 if not found
+       // dinosaur.setScore(0);
     }
 
     @Override

@@ -112,6 +112,7 @@ public class GameEngine extends Game implements InputProcessor{
     }
 
     public void start() {
+        //gameState = GameState.START;
         // Only allow the game to start if it's currently on the START screen
         if (gameState == GameState.START) {
             gameStarted = true;
