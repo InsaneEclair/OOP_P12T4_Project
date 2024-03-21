@@ -27,7 +27,7 @@ public class StartScreen implements Screen {
         this.game = game;
         this.batch = batch;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 500);
+        camera.setToOrtho(false, 800, 515);
 
         generator = new FreeTypeFontGenerator(Gdx.files.internal("PressStart2P.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
