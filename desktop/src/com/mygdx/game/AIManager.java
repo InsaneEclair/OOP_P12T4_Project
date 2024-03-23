@@ -64,11 +64,10 @@ public class AIManager {
         Obstacle newObstacle;
         switch (obstacleType) {
             case 0:
-                String cactusTextureName = gameScreen.getObstacleTextures()[random.nextInt(gameScreen.getObstacleTextures().length)];
-                newObstacle = new Cactus(gameScreen.getViewportWidth(), gameScreen.getGroundYPosition(), cactusTextureName, obstacleSpeed);
+                newObstacle = new Meteorite(gameScreen.getViewportWidth(), gameScreen.getGroundYPosition(), obstacleSpeed);
                 break;
             case 1:
-                newObstacle = new Balloon(gameScreen.getViewportWidth(), gameScreen.getAirYPosition(), obstacleSpeed);
+                newObstacle = new FlyingSaucer(gameScreen.getViewportWidth(), gameScreen.getAirYPosition(), obstacleSpeed);
                 break;
             case 2:
                 float minHeight = gameScreen.getGroundYPosition();
