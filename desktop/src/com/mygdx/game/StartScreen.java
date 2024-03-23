@@ -38,7 +38,7 @@ public class StartScreen implements Screen {
         font = generator.generateFont(parameter);
 
         backgroundTexture = new Texture("planetspace_v2.jpg");
-        dinoTexture = new Texture("main-character1.png");
+        dinoTexture = new Texture("main-character1_dark.png");
         instructionsButtonTexture = new Texture("instructions.png");
     }
 

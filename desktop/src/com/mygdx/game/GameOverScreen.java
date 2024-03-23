@@ -44,7 +44,7 @@ public class GameOverScreen implements Screen {
         parameter.color = Color.WHITE;
         font = generator.generateFont(parameter);
 
-        dinoTexture = new Texture("main-character1.png");
+        dinoTexture = new Texture("main-character1_dark.png");
         restartTexture = new Texture("replay_button.png");
 
         // Load the high score
