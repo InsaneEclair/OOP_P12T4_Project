@@ -18,7 +18,7 @@ public class PauseScreen implements Screen {
     private final BitmapFont font;
     private final FreeTypeFontGenerator generator;
     private final OrthographicCamera camera;
-
+    private final Texture backgroundTexture;
 
     public PauseScreen(final GameEngine game, SpriteBatch batch) {
         this.game = game;
@@ -31,11 +31,11 @@ public class PauseScreen implements Screen {
         generator = new FreeTypeFontGenerator(Gdx.files.internal("PressStart2P.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 12;
-        parameter.color = Color.DARK_GRAY;
+        parameter.color = Color.WHITE;
         font = generator.generateFont(parameter);
 
-
-        dinoTexture = new Texture("main-character1.png");
+        dinoTexture = new Texture("main-character1_dark.png");
+        backgroundTexture = new Texture("background.png");
     }
 
     @Override
@@ -56,6 +56,7 @@ public class PauseScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
+        batch.draw(backgroundTexture, 0, 0, camera.viewportWidth, camera.viewportHeight);
 
         float centerX = camera.viewportWidth / 2f;
         float centerY = camera.viewportHeight / 2f;
