@@ -78,7 +78,7 @@ public class InstructionScreen implements Screen {
         // Draw the controls instruction
         font.draw(batch, "Use Up and Down arrow keys to guide Dino.", centerX - 265, centerY + 70);
         font.draw(batch, "Dodge ALL the meteors to survive.", centerX - 265, centerY + 50);
-        font.draw(batch, "Score 500 points to leap to a new planet, where", centerX - 265, centerY + 30);
+        font.draw(batch, "Score 1000 points to leap to a new planet, where", centerX - 265, centerY + 30);
         font.draw(batch, "altered gravity changes Dino's jump dynamics.", centerX - 265, centerY + 10);
 
         // Draw the additional information
