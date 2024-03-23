@@ -18,9 +18,9 @@ public class SoundManager {
         deadSound = Gdx.audio.newSound(Gdx.files.internal("dead.wav"));
         starSound = Gdx.audio.newSound(Gdx.files.internal("star.mp3"));
 
-        menuSound = (Mp3.Music) Gdx.audio.newMusic(Gdx.files.internal("spacemusic.mp3"));
+        menuSound = (Mp3.Music) Gdx.audio.newMusic(Gdx.files.internal("mainmenumusic.mp3"));
         menuSound.setLooping(true);
-        menuSound.setVolume(0.5f);
+        menuSound.setVolume(0.2f);
 
         roundstartSound = (Mp3.Music) Gdx.audio.newMusic(Gdx.files.internal("ingamemusic.mp3"));
         roundstartSound.setLooping(true);
