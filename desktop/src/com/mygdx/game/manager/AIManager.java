@@ -1,4 +1,11 @@
-    package com.mygdx.game;
+package com.mygdx.game.manager;
+
+import com.mygdx.game.GameEngine;
+import com.mygdx.game.entity.FlyingSaucer;
+import com.mygdx.game.entity.Meteorite;
+import com.mygdx.game.entity.Obstacle;
+import com.mygdx.game.entity.Star;
+import com.mygdx.game.screen.GameScreen;
 
 import java.util.Random;
 

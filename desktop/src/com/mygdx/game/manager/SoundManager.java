@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.manager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -13,16 +13,16 @@ public class SoundManager {
     private final Mp3.Music roundstartSound;
 
     public SoundManager() {
-        jumpSound = Gdx.audio.newSound(Gdx.files.internal("jump1.wav"));
-        scoreUpSound = Gdx.audio.newSound(Gdx.files.internal("scoreup.wav"));
-        deadSound = Gdx.audio.newSound(Gdx.files.internal("dead.wav"));
-        starSound = Gdx.audio.newSound(Gdx.files.internal("star.mp3"));
+        jumpSound = Gdx.audio.newSound(Gdx.files.internal("sound/jump1.wav"));
+        scoreUpSound = Gdx.audio.newSound(Gdx.files.internal("sound/scoreup.wav"));
+        deadSound = Gdx.audio.newSound(Gdx.files.internal("sound/dead.wav"));
+        starSound = Gdx.audio.newSound(Gdx.files.internal("sound/star.mp3"));
 
-        menuSound = (Mp3.Music) Gdx.audio.newMusic(Gdx.files.internal("mainmenumusic.mp3"));
+        menuSound = (Mp3.Music) Gdx.audio.newMusic(Gdx.files.internal("sound/mainmenumusic.mp3"));
         menuSound.setLooping(true);
         menuSound.setVolume(0.2f);
 
-        roundstartSound = (Mp3.Music) Gdx.audio.newMusic(Gdx.files.internal("ingamemusic.mp3"));
+        roundstartSound = (Mp3.Music) Gdx.audio.newMusic(Gdx.files.internal("sound/ingamemusic.mp3"));
         roundstartSound.setLooping(true);
         roundstartSound.setVolume(0.2f);
     }

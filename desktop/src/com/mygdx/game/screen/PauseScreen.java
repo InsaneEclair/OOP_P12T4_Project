@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.mygdx.game.GameEngine;
 
 public class PauseScreen implements Screen {
     private final GameEngine game;
@@ -28,14 +29,14 @@ public class PauseScreen implements Screen {
         camera.setToOrtho(false, 800, 480);
 
         // Create font to draw text
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("PressStart2P.ttf"));
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("font/PressStart2P.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 12;
         parameter.color = Color.WHITE;
         font = generator.generateFont(parameter);
 
-        dinoTexture = new Texture("main-character1_dark.png");
-        backgroundTexture = new Texture("background.png");
+        dinoTexture = new Texture("entity/main-character1_dark.png");
+        backgroundTexture = new Texture("background/background.png");
     }
 
     @Override

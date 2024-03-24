@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -12,6 +12,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import java.util.ArrayList;
 import com.badlogic.gdx.Preferences;
+import com.mygdx.game.*;
+import com.mygdx.game.entity.Dinosaur;
+import com.mygdx.game.entity.Obstacle;
+import com.mygdx.game.manager.*;
+
 public class GameScreen implements Screen {
     private final GameEngine game;
     private final SpriteBatch batch;
@@ -22,16 +27,15 @@ public class GameScreen implements Screen {
     private final String[] planetNames = new String[]{"Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"};
     private final float[] jumpVelocities = {480, 380, 380, 490, 350, 370, 390, 360};
     private final String[] realLifeGravityValues = {"0.38 g", "0.904 g", "1 g", "0.376 g", "2.528 g", "1.065 g", "0.886 g", "1.14 g"};
-    private final float[] modifygravityValues = new float[]{-300,-750,-770,-300,-850,-700,-300,-800};
+    private final float[] modifyGravityValues = new float[]{-300,-750,-770,-300,-850,-700,-300,-800};
     private float currentGravity = -300;
     private float currentVelocity = 600;
-
     private final Texture[] planetTextures;
     private int currentPlanetIndex;
     private int scoreSinceLastPlanetChange;
     private final ArrayList<Obstacle> obstacles;
     private final String[] obstacleTextures = new String[]{"cactus1_dark.png", "cactus2_dark.png"};
-    private final String[] starTextures = new String[]{"smallstar.png", "bigstar.png"};
+    private final String[] starTextures = new String[]{"entity/smallstar.png", "entity/bigstar.png"};
     private static final float groundYPosition = 50; // Example value
     private static final float airYPosition = 85; // Example value
     private final ControlsManager controlsManager;
@@ -50,7 +54,7 @@ public class GameScreen implements Screen {
         this.batch = batch;
 
         // Create font to draw text
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("PressStart2P.ttf"));
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("font/PressStart2P.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 14;
         parameter.color = Color.WHITE;
@@ -63,10 +67,10 @@ public class GameScreen implements Screen {
         PlayerController playerController = new PlayerController(dinosaur, soundManager);
         controlsManager = new ControlsManager(playerController);
 
-        background = new Texture(Gdx.files.internal("background.png"));
-        land = new Texture(Gdx.files.internal("land1_dark.png"));
+        background = new Texture(Gdx.files.internal("background/background.png"));
+        land = new Texture(Gdx.files.internal("background/land1_dark.png"));
 
-        String[] planetTextureNames = new String[]{"mercury.png", "venus.png", "earth.png", "mars.png", "jupiter.png", "saturn.png", "uranus.png", "neptune.png"};
+        String[] planetTextureNames = new String[]{"background/planets/mercury.png", "background/planets/venus.png", "background/planets/earth.png", "background/planets/mars.png", "background/planets/jupiter.png", "background/planets/saturn.png", "background/planets/uranus.png", "background/planets/neptune.png"};
         planetTextures = new Texture[planetTextureNames.length];
         for (int i = 0; i < planetTextures.length; i++) {
             planetTextures[i] = new Texture(Gdx.files.internal(planetTextureNames[i]));
@@ -180,7 +184,7 @@ public class GameScreen implements Screen {
 
     private void updateGravityAndVelocityBasedOnPlanet() {
         // Use currentPlanetIndex to set gravity and velocity
-        currentGravity = modifygravityValues[currentPlanetIndex];
+        currentGravity = modifyGravityValues[currentPlanetIndex];
         dinosaur.setGravity(currentGravity);
 
         currentVelocity = jumpVelocities[currentPlanetIndex];
@@ -266,7 +270,12 @@ public class GameScreen implements Screen {
         dinosaur.dispose();
         font.dispose();
         generator.dispose();
-        if (background != null) background.dispose(); // Ensure background texture is disposed
+        background.dispose();
+        land.dispose();
+
+        for (Texture texture : planetTextures) {
+            texture.dispose();
+        }
 
         for (Obstacle obstacle : obstacles) {
             obstacle.dispose();

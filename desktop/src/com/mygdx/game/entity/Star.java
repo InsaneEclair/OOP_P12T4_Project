@@ -1,5 +1,4 @@
-//Star.java
-package com.mygdx.game;
+package com.mygdx.game.entity;
 
 public class Star extends Obstacle {
 

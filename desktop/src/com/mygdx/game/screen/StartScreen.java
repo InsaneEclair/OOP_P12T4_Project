@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.mygdx.game.GameEngine;
 
 public class StartScreen implements Screen {
     private final GameEngine game;
@@ -29,7 +30,7 @@ public class StartScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 515);
 
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("PressStart2P.ttf"));
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("font/PressStart2P.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 15;
         parameter.color = Color.WHITE;
@@ -37,9 +38,9 @@ public class StartScreen implements Screen {
         parameter.borderColor = Color.BLACK;
         font = generator.generateFont(parameter);
 
-        backgroundTexture = new Texture("planetspace_v2.jpg");
-        dinoTexture = new Texture("main-character1_dark.png");
-        instructionsButtonTexture = new Texture("instructions.png");
+        backgroundTexture = new Texture("background/planetspace_v2.jpg");
+        dinoTexture = new Texture("entity/main-character1_dark.png");
+        instructionsButtonTexture = new Texture("background/instructions.png");
     }
 
     @Override
@@ -48,43 +49,6 @@ public class StartScreen implements Screen {
 
     @Override
     public void render(float delta) {
-//        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-//            game.start();
-//        }
-//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//        camera.update();
-//        batch.setProjectionMatrix(camera.combined);
-//        batch.begin();
-//
-//        // Draw the background
-//        batch.draw(backgroundTexture, 0, 0, camera.viewportWidth, camera.viewportHeight);
-//
-//        // Scale and draw the instructions button
-//        float scale = 0.5f; // Scale factor for the button
-//        float buttonWidth = instructionsButtonTexture.getWidth() * scale;
-//        float buttonHeight = instructionsButtonTexture.getHeight() * scale;
-//        float buttonX = camera.viewportWidth / 2f - buttonWidth / 2;
-//        float buttonY = 50; // Position the button 50 pixels up from the bottom
-//        batch.draw(instructionsButtonTexture, buttonX, buttonY, buttonWidth, buttonHeight);
-//
-//        // Draw the dino and the text
-//        float centerX = camera.viewportWidth / 2f;
-//        float centerY = camera.viewportHeight / 2f;
-//        batch.draw(dinoTexture, centerX - dinoTexture.getWidth() / 2, centerY + 10 - dinoTexture.getHeight() / 2);
-//        font.draw(batch, "Press Space to Start the Game", centerX - 250, centerY + 100);
-//
-//        batch.end();
-//
-//        // Check for touch input on the instructions button
-//        if (Gdx.input.justTouched()) {
-//            Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-//            camera.unproject(touchPos);
-//            Rectangle buttonBounds = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-//            if (buttonBounds.contains(touchPos.x, touchPos.y)) {
-//                game.setScreen(new InstructionScreen(game, batch));
-//            }
-//        }
-
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             game.start();
         }
@@ -101,13 +65,13 @@ public class StartScreen implements Screen {
         float buttonWidth = instructionsButtonTexture.getWidth() * scale;
         float buttonHeight = instructionsButtonTexture.getHeight() * scale;
         float buttonX = camera.viewportWidth / 2f - buttonWidth / 2;
-        float buttonY = 110; // Position the button 50 pixels up from the bottom
+        float buttonY = 110; // Position the button 110 pixels up from the bottom
         batch.draw(instructionsButtonTexture, buttonX, buttonY, buttonWidth, buttonHeight);
 
         // Draw the dino and the text
         float centerX = camera.viewportWidth / 2f;
         float centerY = camera.viewportHeight / 2f;
-        batch.draw(dinoTexture, centerX - dinoTexture.getWidth() / 2, centerY + 10 - dinoTexture.getHeight() / 2);
+        batch.draw(dinoTexture, centerX - (float) dinoTexture.getWidth() / 2, centerY + 10 - (float) dinoTexture.getHeight() / 2);
         font.draw(batch, "Press Space to Start the Game", centerX - 250, centerY + 100);
 
         batch.end();

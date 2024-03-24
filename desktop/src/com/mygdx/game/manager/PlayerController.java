@@ -1,4 +1,6 @@
-package com.mygdx.game;
+package com.mygdx.game.manager;
+
+import com.mygdx.game.entity.Dinosaur;
 
 public class PlayerController implements ControlsManager.InputListener {
     private final Dinosaur dinosaur;

@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.GameEngine;
+import com.mygdx.game.entity.Dinosaur;
 
 public class GameOverScreen implements Screen {
     private final GameEngine game;
@@ -38,21 +40,21 @@ public class GameOverScreen implements Screen {
         camera.setToOrtho(false, 800, 480);
 
         // Create font to draw text
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("PressStart2P.ttf"));
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("font/PressStart2P.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 14;
         parameter.color = Color.WHITE;
         font = generator.generateFont(parameter);
 
-        dinoTexture = new Texture("main-character1_dark.png");
-        restartTexture = new Texture("replay_button.png");
+        dinoTexture = new Texture("entity/main-character1_dark.png");
+        restartTexture = new Texture("background/replay_button.png");
 
         // Load the high score
         prefs = Gdx.app.getPreferences("DinoGamePreferences");
         highScore = prefs.getInteger("highScore", 0); // Load the high score, default to 0 if not found
         currentHighScore = prefs.getInteger("highScore", 0);
         this.banner = new Banner(new Vector2((float)(Gdx.graphics.getWidth() / 2 - 200), (float)(Gdx.graphics.getHeight() / 2 - 200)));
-        backgroundTexture = new Texture("planetspace_v2.jpg");
+        backgroundTexture = new Texture("background/planetspace_v2.jpg");
     }
 
     @Override
@@ -77,8 +79,6 @@ public class GameOverScreen implements Screen {
             prefs.flush();
         }
 
-        //int currentHighScore = prefs.getInteger("highScore", 0);
-
         batch.begin();
         // Draw the background
         batch.draw(backgroundTexture, 0, 0, camera.viewportWidth, camera.viewportHeight);
@@ -94,7 +94,6 @@ public class GameOverScreen implements Screen {
         batch.draw(restartTexture, imgX, imgY);
         font.draw(batch, "Game Over", centerX - 50, centerY + 70);
         font.draw(batch, "Your score: " + dinosaur.getScore(), centerX - 100, centerY + 30);
-//         Draw the high score
         font.draw(batch, "High Score: " + currentHighScore, centerX - 110, centerY - 10);
         if (this.banner != null) {
             this.banner.draw(this.batch);

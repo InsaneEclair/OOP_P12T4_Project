@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.entity;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
@@ -26,16 +26,15 @@ public class Dinosaur {
     private static final float DUCKING_ANIMATION_SPEED = 0.1f; // Adjust speed as needed (lower for faster animation)
 
 
-
     public Dinosaur(int x, int groundLevel) {
         this.groundLevel = groundLevel; // Store the ground level
         position = new Vector2(x, groundLevel); // Adjusted position to stand on the land
 
         velocity = new Vector2(0, 0);
-        standingTexture = new Texture("main-character1_dark.png");
-        standingTexture2 = new Texture("main-character2_dark.png");
-        duckingTexture = new Texture("main-character5_dark.png");
-        duckingTexture2 = new Texture("main-character6_dark.png");
+        standingTexture = new Texture("entity/main-character1_dark.png");
+        standingTexture2 = new Texture("entity/main-character2_dark.png");
+        duckingTexture = new Texture("entity/main-character5_dark.png");
+        duckingTexture2 = new Texture("entity/main-character6_dark.png");
         texture = standingTexture; // Default to standing texture
         bounds = new Rectangle(x, groundLevel, standingTexture.getWidth(), standingTexture.getHeight());
 
@@ -147,5 +146,9 @@ public class Dinosaur {
 
     public void dispose() {
         texture.dispose();
+        standingTexture.dispose();
+        standingTexture2.dispose();
+        duckingTexture.dispose();
+        duckingTexture2.dispose();
     }
 }

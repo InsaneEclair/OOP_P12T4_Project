@@ -1,8 +1,12 @@
-package com.mygdx.game;
+package com.mygdx.game.manager;
+
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.game.GameEngine;
+import com.mygdx.game.entity.Dinosaur;
+import com.mygdx.game.entity.Obstacle;
+import com.mygdx.game.entity.Star;
 
 public class CollisionManager {
     private final Dinosaur dinosaur;
@@ -30,9 +34,9 @@ public class CollisionManager {
                 if (obstacle instanceof Star) {
                         Star star = (Star) obstacle;
                         String textureFileName = star.getTextureFileName();
-                        if(textureFileName.equals("smallstar.png")) {
+                        if(textureFileName.equals("entity/smallstar.png")) {
                             gameEngine.incrementScore(100);
-                        } else if (textureFileName.equals("bigstar.png")) {
+                        } else if (textureFileName.equals("entity/bigstar.png")) {
                             gameEngine.incrementScore(500);
                         }
                     soundManager.playStarSound();

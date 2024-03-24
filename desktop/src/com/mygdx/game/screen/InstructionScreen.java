@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -10,14 +10,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.mygdx.game.GameEngine;
 
 public class InstructionScreen implements Screen {
     private final GameEngine game;
     private final SpriteBatch batch;
 
     private final Texture backgroundTexture;
-    private BitmapFont font;
-    private FreeTypeFontGenerator generator;
+    private final BitmapFont font;
+    private final FreeTypeFontGenerator generator;
 
     private final OrthographicCamera camera;
     public InstructionScreen(final GameEngine game, SpriteBatch batch) {
@@ -27,7 +28,7 @@ public class InstructionScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 290);
 
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("PressStart2P.ttf"));
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("font/PressStart2P.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 11;
         parameter.color = Color.WHITE;
@@ -35,7 +36,7 @@ public class InstructionScreen implements Screen {
         parameter.borderColor = Color.BLACK;
         font = generator.generateFont(parameter);
 
-        backgroundTexture = new Texture("ImageInstruction.png"); // Load the texture
+        backgroundTexture = new Texture("background/ImageInstruction.png"); // Load the texture
 
     }
 

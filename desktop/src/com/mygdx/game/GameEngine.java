@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.mygdx.game.entity.Dinosaur;
+import com.mygdx.game.manager.ScreenManager;
+import com.mygdx.game.manager.SoundManager;
 
 public class GameEngine extends Game implements InputProcessor{
     private SpriteBatch batch;
@@ -98,7 +101,7 @@ public class GameEngine extends Game implements InputProcessor{
     @Override
     public void create() {
         this.batch = new SpriteBatch();
-        this.dinosaur = new Dinosaur(0,50);
+        this.dinosaur = new Dinosaur(0,50); // singleton design pattern
         this.gameStarted = true;
         this.gameState = GameState.START;
         this.screenManager = new ScreenManager(this, batch);
@@ -112,7 +115,6 @@ public class GameEngine extends Game implements InputProcessor{
     }
 
     public void start() {
-        //gameState = GameState.START;
         // Only allow the game to start if it's currently on the START screen
         if (gameState == GameState.START) {
             gameStarted = true;

@@ -1,9 +1,4 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
-package com.mygdx.game;
+package com.mygdx.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -13,10 +8,10 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.Random;
 
 public class Banner {
-    private Texture texture;
+    private final Texture texture;
     private Vector2 pos;
     private Vector2 closePos;
-    private Texture closeTexture;
+    private final Texture closeTexture;
     private final Texture backgroundTexture;
     private final OrthographicCamera camera;
 
@@ -27,7 +22,7 @@ public class Banner {
         this.texture = new Texture("banners/funfact" + r + ".png");
         this.closeTexture = new Texture("banners/close.png");
         this.closePos = new Vector2(pos.x - 25.0F, pos.y + 400.0F - 25.0F);
-        backgroundTexture = new Texture(Gdx.files.internal("background.png"));
+        backgroundTexture = new Texture(Gdx.files.internal("background/background.png"));
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 500);
     }
@@ -45,11 +40,6 @@ public class Banner {
         batch.draw(backgroundTexture, 0, 0, camera.viewportWidth, camera.viewportHeight);
         batch.draw(this.texture, this.pos.x, this.pos.y, 400.0F, 400.0F);
         batch.draw(this.closeTexture, this.closePos.x, this.closePos.y, 50.0F, 50.0F);
-//        float backgroundX = camera.position.x - camera.viewportWidth / 2f;
-//        float backgroundY = camera.position.y - camera.viewportHeight / 2f;
-//        batch.draw(background, backgroundX, backgroundY, camera.viewportWidth, camera.viewportHeight);
-//        batch.draw(land, 0, 50, Gdx.graphics.getWidth(), land.getHeight());
-
     }
 
     public Texture getTexture() {
