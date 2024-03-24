@@ -101,7 +101,7 @@ public class GameEngine extends Game implements InputProcessor{
     @Override
     public void create() {
         this.batch = new SpriteBatch();
-        this.dinosaur = new Dinosaur(0,50); // singleton design pattern
+        this.dinosaur = Dinosaur.getInstance(0, 50); // singleton design pattern
         this.gameStarted = true;
         this.gameState = GameState.START;
         this.screenManager = new ScreenManager(this, batch);

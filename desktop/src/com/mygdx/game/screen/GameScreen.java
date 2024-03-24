@@ -11,10 +11,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import java.util.ArrayList;
+import java.util.Random;
+
 import com.badlogic.gdx.Preferences;
 import com.mygdx.game.*;
 import com.mygdx.game.entity.Dinosaur;
-import com.mygdx.game.entity.Obstacle;
+import com.mygdx.game.entity.GameObject;
 import com.mygdx.game.manager.*;
 
 public class GameScreen implements Screen {
@@ -28,14 +30,10 @@ public class GameScreen implements Screen {
     private final float[] jumpVelocities = {480, 380, 380, 490, 350, 370, 390, 360};
     private final String[] realLifeGravityValues = {"0.38 g", "0.904 g", "1 g", "0.376 g", "2.528 g", "1.065 g", "0.886 g", "1.14 g"};
     private final float[] modifyGravityValues = new float[]{-300,-750,-770,-300,-850,-700,-300,-800};
-    private float currentGravity = -300;
-    private float currentVelocity = 600;
     private final Texture[] planetTextures;
     private int currentPlanetIndex;
     private int scoreSinceLastPlanetChange;
-    private final ArrayList<Obstacle> obstacles;
-    private final String[] obstacleTextures = new String[]{"cactus1_dark.png", "cactus2_dark.png"};
-    private final String[] starTextures = new String[]{"entity/smallstar.png", "entity/bigstar.png"};
+    private final ArrayList<GameObject> gameObjects;
     private static final float groundYPosition = 50; // Example value
     private static final float airYPosition = 85; // Example value
     private final ControlsManager controlsManager;
@@ -46,7 +44,6 @@ public class GameScreen implements Screen {
     private final CollisionManager collisionManager;
     private int highScore;
     private final Preferences prefs;
-
 
 
     public GameScreen(final GameEngine game, SpriteBatch batch) {
@@ -78,12 +75,12 @@ public class GameScreen implements Screen {
         currentPlanetIndex = 0;
         scoreSinceLastPlanetChange = 0;
 
-        obstacles = new ArrayList<>();
-        float minTimeBetweenObstacles = 1.0f; // Minimum time in seconds until the next obstacle spawns
-        float maxTimeBetweenObstacles = 3.0f; // Maximum time in seconds until the next obstacle spawns
+        gameObjects = new ArrayList<>();
+        float minTimeBetweenObjects = 1.0f; // Minimum time in seconds until the next game object spawns
+        float maxTimeBetweenObjects = 3.0f; // Maximum time in seconds until the next game object spawns
 
-        this.aiManager = new AIManager(game,this, minTimeBetweenObstacles, maxTimeBetweenObstacles);
-        this.collisionManager = new CollisionManager(dinosaur, obstacles, game);
+        this.aiManager = new AIManager(game,this, minTimeBetweenObjects, maxTimeBetweenObjects);
+        this.collisionManager = new CollisionManager(dinosaur, gameObjects, game);
         prefs = Gdx.app.getPreferences("DinoGamePreferences");
         highScore = prefs.getInteger("highScore", 0); // Load, default to 0 if not found
        // dinosaur.setScore(0);
@@ -107,7 +104,7 @@ public class GameScreen implements Screen {
 
             // Update game entities
             dinosaur.update(delta);
-            aiManager.update(delta); // Handles obstacle spawning
+            aiManager.update(delta); // Handles game object spawning
             camera.update();
             batch.setProjectionMatrix(camera.combined);
 
@@ -164,10 +161,10 @@ public class GameScreen implements Screen {
                 font.draw(batch, welcomeMessage, 20, camera.viewportHeight - 20);
             }
 
-            // Draw obstacles
-            for (Obstacle obstacle : obstacles) {
-                obstacle.update(delta);
-                batch.draw(obstacle.getTexture(), obstacle.getPosition().x, obstacle.getPosition().y);
+            // Draw game objects
+            for (GameObject gameObject : gameObjects) {
+                gameObject.update(delta);
+                batch.draw(gameObject.getTexture(), gameObject.getPosition().x, gameObject.getPosition().y);
             }
 
             // Draw dinosaur
@@ -184,18 +181,16 @@ public class GameScreen implements Screen {
 
     private void updateGravityAndVelocityBasedOnPlanet() {
         // Use currentPlanetIndex to set gravity and velocity
-        currentGravity = modifyGravityValues[currentPlanetIndex];
+        float currentGravity = modifyGravityValues[currentPlanetIndex];
         dinosaur.setGravity(currentGravity);
 
-        currentVelocity = jumpVelocities[currentPlanetIndex];
+        float currentVelocity = jumpVelocities[currentPlanetIndex];
         dinosaur.setJumpVelocity(currentVelocity);
 
         // Optionally log these changes for debugging
         System.out.println("Updated gravity to: " + currentGravity + " for " + planetNames[currentPlanetIndex]);
         System.out.println("Updated velocity to: " + currentVelocity + " for " + planetNames[currentPlanetIndex]);
     }
-
-
 
     public float getViewportWidth() {
         return camera.viewportWidth;
@@ -205,15 +200,9 @@ public class GameScreen implements Screen {
         return camera.viewportHeight;
     }
 
-    public void addObstacle(Obstacle obstacle) {
-        obstacles.add(obstacle);
+    public void addGameObject(GameObject gameObject) {
+        gameObjects.add(gameObject);
     }
-
-    public String[] getObstacleTextures() {
-        return obstacleTextures;
-    }
-
-    public String[] getStarTextures() {return starTextures;}
 
     public float getAirYPosition() {
         return airYPosition;
@@ -277,8 +266,8 @@ public class GameScreen implements Screen {
             texture.dispose();
         }
 
-        for (Obstacle obstacle : obstacles) {
-            obstacle.dispose();
+        for (GameObject gameObject : gameObjects) {
+            gameObject.dispose();
         }
 //        batch.dispose();
 //        Preferences prefs = Gdx.app.getPreferences("DinoGamePreferences");

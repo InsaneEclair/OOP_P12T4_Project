@@ -1,10 +1,8 @@
 package com.mygdx.game.manager;
 
 import com.mygdx.game.GameEngine;
-import com.mygdx.game.entity.FlyingSaucer;
-import com.mygdx.game.entity.Meteorite;
-import com.mygdx.game.entity.Obstacle;
-import com.mygdx.game.entity.Star;
+import com.mygdx.game.entity.GameObject;
+import com.mygdx.game.entity.GameObjectFactory;
 import com.mygdx.game.screen.GameScreen;
 
 import java.util.Random;
@@ -13,27 +11,34 @@ public class AIManager {
     private final GameEngine gameEngine;
     private final GameScreen gameScreen;
     private final Random random;
-    private float timeUntilNextObstacle;
-    private final float minTimeBetweenObstacles;
-    private final float maxTimeBetweenObstacles;
-    private float obstacleSpeed = -150; // Initial speed of obstacles
+    private float timeUntilNextObject;
+    private final float minTimeBetweenObjects;
+    private final float maxTimeBetweenObjects;
+    private float gameObjectSpeed = -150; // Initial speed of GameObjects
     private int lastScoreIncrement = 0; // Keeps track of the last score increment
 
-    public AIManager(GameEngine gameEngine, GameScreen gameScreen, float minTimeBetweenObstacles, float maxTimeBetweenObstacles) {
-        this.gameEngine = gameEngine;
-        this.gameScreen = gameScreen;
-        this.minTimeBetweenObstacles = minTimeBetweenObstacles;
-        this.maxTimeBetweenObstacles = maxTimeBetweenObstacles;
-        this.random = new Random();
-        resetObstacleTimer();
+    public enum GameObjectType {
+        METEORITE,
+        FLYING_SAUCER,
+        SMALL_STAR,
+        BIG_STAR
     }
 
-    private void resetObstacleTimer() {
-        timeUntilNextObstacle = getRandomSpawnTime();
+    public AIManager(GameEngine gameEngine, GameScreen gameScreen, float minTimeBetweenObjects, float maxTimeBetweenObjects) {
+        this.gameEngine = gameEngine;
+        this.gameScreen = gameScreen;
+        this.minTimeBetweenObjects = minTimeBetweenObjects;
+        this.maxTimeBetweenObjects = maxTimeBetweenObjects;
+        this.random = new Random();
+        resetObjectTimer();
+    }
+
+    private void resetObjectTimer() {
+        timeUntilNextObject = getRandomSpawnTime();
     }
 
     private float getRandomSpawnTime() {
-        return random.nextFloat() * (maxTimeBetweenObstacles - minTimeBetweenObstacles) + minTimeBetweenObstacles;
+        return random.nextFloat() * (maxTimeBetweenObjects - minTimeBetweenObjects) + minTimeBetweenObjects;
     }
 
     public void update(float delta) {
@@ -45,47 +50,54 @@ public class AIManager {
 
             // Only increase speed if it does not exceed the maximum
             // Example max speed
-            float MAX_OBSTACLE_SPEED = -300;
-            if (obstacleSpeed > MAX_OBSTACLE_SPEED) {
+            float MAX_GAME_OBJECT_SPEED = -300;
+            if (gameObjectSpeed > MAX_GAME_OBJECT_SPEED) {
                 // The amount to decrease speed (making it more negative increases speed)
                 float SPEED_INCREMENT = -20;
-                obstacleSpeed += SPEED_INCREMENT; // Decrease speed (since speed is negative, adding a negative value increases its magnitude)
+                gameObjectSpeed += SPEED_INCREMENT; // Decrease speed (since speed is negative, adding a negative value increases its magnitude)
                 gameScreen.playScoreUpSound();
 
                 // Ensure speed does not exceed the maximum allowed speed
-                obstacleSpeed = Math.max(obstacleSpeed, MAX_OBSTACLE_SPEED);
+                gameObjectSpeed = Math.max(gameObjectSpeed, MAX_GAME_OBJECT_SPEED);
             }
         }
 
-        // Your existing obstacle spawning logic...
-        timeUntilNextObstacle -= delta;
-        if (timeUntilNextObstacle <= 0) {
-            spawnObstacle();
-            resetObstacleTimer();
+        timeUntilNextObject -= delta;
+        if (timeUntilNextObject <= 0) {
+            spawnGameObject();
+            resetObjectTimer();
         }
     }
 
-    private void spawnObstacle() {
-        int obstacleType = random.nextInt(3); // Generate a random number between 0 and 2 (inclusive) for the obstacle type
+    private void spawnGameObject() {
+        GameObjectType type = GameObjectType.values()[random.nextInt(GameObjectType.values().length)];
+        float x = gameScreen.getViewportWidth();  // Assuming x position for new object
+        float y = determineYPosition(type);
+        float speed = gameObjectSpeed;
 
-        Obstacle newObstacle;
-        switch (obstacleType) {
-            case 0:
-                newObstacle = new Meteorite(gameScreen.getViewportWidth(), gameScreen.getGroundYPosition(), obstacleSpeed);
+        GameObject newGameObject = GameObjectFactory.createGameObject(type, x, y, speed);
+        gameScreen.addGameObject(newGameObject);
+    }
+
+    private float determineYPosition(GameObjectType type) {
+        float yPosition;
+        switch (type) {
+            case METEORITE:
+                yPosition = gameScreen.getGroundYPosition();
                 break;
-            case 1:
-                newObstacle = new FlyingSaucer(gameScreen.getViewportWidth(), gameScreen.getAirYPosition(), obstacleSpeed);
+            case FLYING_SAUCER:
+                yPosition = gameScreen.getAirYPosition();
                 break;
-            case 2:
+            case SMALL_STAR:
+            case BIG_STAR:
+                // Calculate a random height within the viewport for both small and big stars
                 float minHeight = gameScreen.getGroundYPosition();
                 float maxHeight = gameScreen.getViewportHeight();
-                float randomHeight = random.nextFloat() * (maxHeight - minHeight) + minHeight;
-                String starTextureName = gameScreen.getStarTextures()[random.nextInt(gameScreen.getStarTextures().length)];
-                newObstacle = new Star(gameScreen.getViewportWidth(), randomHeight, starTextureName, obstacleSpeed);
+                yPosition = random.nextFloat() * (maxHeight - minHeight) + minHeight;
                 break;
             default:
-                throw new IllegalStateException("Unexpected obstacle type: " + obstacleType);
+                throw new IllegalStateException("Unexpected GameObjectType: " + type);
         }
-        gameScreen.addObstacle(newObstacle);
+        return yPosition;
     }
 }

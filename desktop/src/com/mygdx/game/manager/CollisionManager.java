@@ -5,18 +5,18 @@ import java.util.Iterator;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.GameEngine;
 import com.mygdx.game.entity.Dinosaur;
-import com.mygdx.game.entity.Obstacle;
+import com.mygdx.game.entity.GameObject;
 import com.mygdx.game.entity.Star;
 
 public class CollisionManager {
     private final Dinosaur dinosaur;
-    private final ArrayList<Obstacle> obstacles; // Renamed for clarity
+    private final ArrayList<GameObject> gameObjects; // Renamed for clarity
     private final GameEngine gameEngine;
     private final SoundManager soundManager;
 
-    public CollisionManager(Dinosaur dinosaur, ArrayList<Obstacle> obstacles, GameEngine gameEngine) {
+    public CollisionManager(Dinosaur dinosaur, ArrayList<GameObject> gameObjects, GameEngine gameEngine) {
         this.dinosaur = dinosaur;
-        this.obstacles = obstacles;
+        this.gameObjects = gameObjects;
         this.gameEngine = gameEngine;
         this.soundManager = new SoundManager();
     }
@@ -25,14 +25,14 @@ public class CollisionManager {
         Rectangle dinosaurBounds = dinosaur.getBounds();
 
         // Use an iterator to safely remove elements from the list while iterating
-        Iterator<Obstacle> iterator = obstacles.iterator();
+        Iterator<GameObject> iterator = gameObjects.iterator();
         while (iterator.hasNext()) {
-            Obstacle obstacle = iterator.next();
-            Rectangle obstacleBounds = obstacle.getBounds();
+            GameObject gameObject = iterator.next();
+            Rectangle gameObjectBounds = gameObject.getBounds();
 
-            if (dinosaurBounds.overlaps(obstacleBounds)) {
-                if (obstacle instanceof Star) {
-                        Star star = (Star) obstacle;
+            if (dinosaurBounds.overlaps(gameObjectBounds)) {
+                if (gameObject instanceof Star) {
+                        Star star = (Star) gameObject;
                         String textureFileName = star.getTextureFileName();
                         if(textureFileName.equals("entity/smallstar.png")) {
                             gameEngine.incrementScore(100);

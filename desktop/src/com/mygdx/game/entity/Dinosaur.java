@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Dinosaur {
+    private static Dinosaur instance;
     private Texture texture; //Texture being displayed
     private final Texture standingTexture; // When Standing
     private final Texture standingTexture2;
@@ -26,7 +27,7 @@ public class Dinosaur {
     private static final float DUCKING_ANIMATION_SPEED = 0.1f; // Adjust speed as needed (lower for faster animation)
 
 
-    public Dinosaur(int x, int groundLevel) {
+    private Dinosaur(int x, int groundLevel) {
         this.groundLevel = groundLevel; // Store the ground level
         position = new Vector2(x, groundLevel); // Adjusted position to stand on the land
 
@@ -39,6 +40,13 @@ public class Dinosaur {
         bounds = new Rectangle(x, groundLevel, standingTexture.getWidth(), standingTexture.getHeight());
 
         score = 0;
+    }
+
+    public static Dinosaur getInstance(int x, int groundLevel) {
+        if (instance == null) {
+            instance = new Dinosaur(x, groundLevel);
+        }
+        return instance;
     }
 
     public void update(float dt) {

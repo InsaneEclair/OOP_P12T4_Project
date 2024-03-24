@@ -1,6 +1,6 @@
 package com.mygdx.game.entity;
 
-public class Star extends Obstacle {
+public class Star extends GameObject {
 
     private final String textureFileName;
 
