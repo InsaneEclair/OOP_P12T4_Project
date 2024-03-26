@@ -1,20 +1,18 @@
 package com.mygdx.game.manager;
 
 import com.mygdx.game.GameEngine;
-import com.mygdx.game.entity.GameObject;
-import com.mygdx.game.entity.GameObjectFactory;
 import com.mygdx.game.screen.GameScreen;
-
 import java.util.Random;
 
 public class AIManager {
     private final GameEngine gameEngine;
     private final GameScreen gameScreen;
+    private EntityManager entityManager;
     private final Random random;
     private float timeUntilNextObject;
     private final float minTimeBetweenObjects;
     private final float maxTimeBetweenObjects;
-    private float gameObjectSpeed = -150; // Initial speed of GameObjects
+    float gameObjectSpeed = -150; // Initial speed of GameObjects
     private int lastScoreIncrement = 0; // Keeps track of the last score increment
 
     public enum GameObjectType {
@@ -24,9 +22,10 @@ public class AIManager {
         BIG_STAR
     }
 
-    public AIManager(GameEngine gameEngine, GameScreen gameScreen, float minTimeBetweenObjects, float maxTimeBetweenObjects) {
+    public AIManager(GameEngine gameEngine, GameScreen gameScreen, EntityManager entityManager, float minTimeBetweenObjects, float maxTimeBetweenObjects) {
         this.gameEngine = gameEngine;
         this.gameScreen = gameScreen;
+        this.entityManager = entityManager; // Initialize entityManager
         this.minTimeBetweenObjects = minTimeBetweenObjects;
         this.maxTimeBetweenObjects = maxTimeBetweenObjects;
         this.random = new Random();
@@ -39,6 +38,10 @@ public class AIManager {
 
     private float getRandomSpawnTime() {
         return random.nextFloat() * (maxTimeBetweenObjects - minTimeBetweenObjects) + minTimeBetweenObjects;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     public void update(float delta) {
@@ -62,42 +65,12 @@ public class AIManager {
             }
         }
 
-        timeUntilNextObject -= delta;
+        timeUntilNextObject -= delta; // Ensure delta is being subtracted correctly
+
         if (timeUntilNextObject <= 0) {
-            spawnGameObject();
+            GameObjectType type = GameObjectType.values()[random.nextInt(GameObjectType.values().length)];
+            entityManager.spawnGameObject(type, gameScreen, gameObjectSpeed);
             resetObjectTimer();
         }
-    }
-
-    private void spawnGameObject() {
-        GameObjectType type = GameObjectType.values()[random.nextInt(GameObjectType.values().length)];
-        float x = gameScreen.getViewportWidth();  // Assuming x position for new object
-        float y = determineYPosition(type);
-        float speed = gameObjectSpeed;
-
-        GameObject newGameObject = GameObjectFactory.createGameObject(type, x, y, speed);
-        gameScreen.addGameObject(newGameObject);
-    }
-
-    private float determineYPosition(GameObjectType type) {
-        float yPosition;
-        switch (type) {
-            case METEORITE:
-                yPosition = gameScreen.getGroundYPosition();
-                break;
-            case FLYING_SAUCER:
-                yPosition = gameScreen.getAirYPosition();
-                break;
-            case SMALL_STAR:
-            case BIG_STAR:
-                // Calculate a random height within the viewport for both small and big stars
-                float minHeight = gameScreen.getGroundYPosition();
-                float maxHeight = gameScreen.getViewportHeight();
-                yPosition = random.nextFloat() * (maxHeight - minHeight) + minHeight;
-                break;
-            default:
-                throw new IllegalStateException("Unexpected GameObjectType: " + type);
-        }
-        return yPosition;
     }
 }
