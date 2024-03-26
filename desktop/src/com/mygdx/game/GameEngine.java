@@ -95,7 +95,8 @@ public class GameEngine extends Game implements InputProcessor{
         PAUSED,
         GAME_OVER,
 
-        INSTRUCTIONS
+        INSTRUCTIONS,
+        HIGHSCORES
     }
 
     @Override
@@ -115,6 +116,7 @@ public class GameEngine extends Game implements InputProcessor{
     }
 
     public void start() {
+        gameState = GameState.START;
         // Only allow the game to start if it's currently on the START screen
         if (gameState == GameState.START) {
             gameStarted = true;
@@ -127,10 +129,17 @@ public class GameEngine extends Game implements InputProcessor{
 
     public void showInstructions() {
         // Transition to INSTRUCTIONS state only from START state
-        if (gameState == GameState.START) {
-            gameState = GameState.INSTRUCTIONS;
-            screenManager.goToState(GameState.INSTRUCTIONS);
-        }
+        gameState = GameState.INSTRUCTIONS;
+        screenManager.goToState(GameState.INSTRUCTIONS);
+    }
+
+    public void showHighScores() {
+        // Transition to INSTRUCTIONS state only from START state
+//        System.out.println("state:" + String.valueOf(gameState));
+        dinosaur.setScore(0);
+        gameState = GameState.HIGHSCORES;
+        // Make sure this method correctly initializes and sets the HighScores screen
+        screenManager.goToState(GameState.HIGHSCORES);
     }
 
     public void pause() {

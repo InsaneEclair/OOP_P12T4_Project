@@ -53,6 +53,10 @@ public class ScreenManager {
                 // Transition to the InstructionScreen
                 game.setScreen(new InstructionScreen(game, batch));
                 break;
+            case HIGHSCORES:
+                // Transition to the InstructionScreen
+                game.setScreen(new HighScoresScreen(game, batch));
+                break;
             default:
                 game.setScreen(new StartScreen(game, batch));
         }
