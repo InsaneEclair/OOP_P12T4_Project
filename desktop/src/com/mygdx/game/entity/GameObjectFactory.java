@@ -3,7 +3,7 @@ package com.mygdx.game.entity;
 import com.mygdx.game.manager.AIManager;
 
 public class GameObjectFactory {
-    public static GameObject createGameObject(AIManager.GameObjectType type, float x, float y, float speed) {
+    public static Entity createEntity(AIManager.GameObjectType type, float x, float y, float speed) {
         switch (type) {
             case FLYING_SAUCER:
                 return new FlyingSaucer(x, y, speed);
@@ -17,5 +17,4 @@ public class GameObjectFactory {
                 throw new IllegalArgumentException("Invalid GameObject type: " + type);
         }
     }
-
 }
