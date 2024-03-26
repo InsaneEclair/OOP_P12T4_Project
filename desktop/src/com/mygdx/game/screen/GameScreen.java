@@ -1,3 +1,4 @@
+
 package com.mygdx.game.screen;
 
 import com.badlogic.gdx.Gdx;
@@ -11,12 +12,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import java.util.ArrayList;
-import java.util.Random;
-
 import com.badlogic.gdx.Preferences;
 import com.mygdx.game.*;
 import com.mygdx.game.entity.Dinosaur;
-import com.mygdx.game.entity.GameObject;
+import com.mygdx.game.entity.Entity;
 import com.mygdx.game.manager.*;
 
 public class GameScreen implements Screen {
@@ -33,7 +32,7 @@ public class GameScreen implements Screen {
     private final Texture[] planetTextures;
     private int currentPlanetIndex;
     private int scoreSinceLastPlanetChange;
-    private final ArrayList<GameObject> gameObjects;
+    private ArrayList<Entity> entities;
     private static final float groundYPosition = 50; // Example value
     private static final float airYPosition = 85; // Example value
     private final ControlsManager controlsManager;
@@ -44,11 +43,12 @@ public class GameScreen implements Screen {
     private final CollisionManager collisionManager;
     private int highScore;
     private final Preferences prefs;
-
+    private final EntityManager entityManager;
 
     public GameScreen(final GameEngine game, SpriteBatch batch) {
         this.game = game;
         this.batch = batch;
+        entityManager = new EntityManager();
 
         // Create font to draw text
         generator = new FreeTypeFontGenerator(Gdx.files.internal("font/PressStart2P.ttf"));
@@ -75,20 +75,18 @@ public class GameScreen implements Screen {
         currentPlanetIndex = 0;
         scoreSinceLastPlanetChange = 0;
 
-        gameObjects = new ArrayList<>();
+        entities = new ArrayList<>();
         float minTimeBetweenObjects = 1.0f; // Minimum time in seconds until the next game object spawns
         float maxTimeBetweenObjects = 3.0f; // Maximum time in seconds until the next game object spawns
 
-        this.aiManager = new AIManager(game,this, minTimeBetweenObjects, maxTimeBetweenObjects);
-        this.collisionManager = new CollisionManager(dinosaur, gameObjects, game);
+        this.aiManager = new AIManager(game, this, entityManager, minTimeBetweenObjects, maxTimeBetweenObjects);
+        this.collisionManager = new CollisionManager(dinosaur, (ArrayList<Entity>) entityManager.getEntities(), game);
         prefs = Gdx.app.getPreferences("DinoGamePreferences");
-        highScore = prefs.getInteger("highScore", 0); // Load, default to 0 if not found
-       // dinosaur.setScore(0);
+        highScore = prefs.getInteger("highScore", 0);
     }
 
     @Override
     public void render(float delta) {
-
         if (game.isGameStarted() && game.getGameState() != GameEngine.GameState.GAME_OVER) {
             handleInput();
             updateGravityAndVelocityBasedOnPlanet();
@@ -118,8 +116,6 @@ public class GameScreen implements Screen {
             float scoreIncrement = 60 * delta;
             int newScore = dinosaur.getScore() + (int)scoreIncrement;
             dinosaur.setScore(newScore);
-            Gdx.app.log("Score", "Current score: " + newScore);
-            Gdx.app.log("Delta Time", "Delta: " + delta);
 
             // Check and update high score
             if (newScore > highScore) {
@@ -128,6 +124,7 @@ public class GameScreen implements Screen {
                 prefs.flush();
             }
 
+            entities = (ArrayList<Entity>) entityManager.getEntities();
             batch.begin();
 
             // Draw background
@@ -162,9 +159,9 @@ public class GameScreen implements Screen {
             }
 
             // Draw game objects
-            for (GameObject gameObject : gameObjects) {
-                gameObject.update(delta);
-                batch.draw(gameObject.getTexture(), gameObject.getPosition().x, gameObject.getPosition().y);
+            for (Entity entity : entities) {
+                entity.update(delta);
+                batch.draw(entity.getTexture(), entity.getPosition().x, entity.getPosition().y);
             }
 
             // Draw dinosaur
@@ -174,9 +171,14 @@ public class GameScreen implements Screen {
             font.draw(batch, "Score: " + dinosaur.getScore(), camera.viewportWidth - 200, camera.viewportHeight - 20);
             font.draw(batch, "High Score: " + highScore, camera.viewportWidth - 250, camera.viewportHeight - 40);
             //font.draw(batch, "Gravity: " + currentGravity, 20, camera.viewportHeight - 40); testing purposes
-
             batch.end();
         }
+    }
+
+    public float calculateMaxJumpHeight() {
+        float jumpVelocity = jumpVelocities[currentPlanetIndex];
+        float gravity = Math.abs(modifyGravityValues[currentPlanetIndex]);
+        return (jumpVelocity * jumpVelocity) / (2 * gravity);
     }
 
     private void updateGravityAndVelocityBasedOnPlanet() {
@@ -186,23 +188,13 @@ public class GameScreen implements Screen {
 
         float currentVelocity = jumpVelocities[currentPlanetIndex];
         dinosaur.setJumpVelocity(currentVelocity);
-
-        // Optionally log these changes for debugging
-        System.out.println("Updated gravity to: " + currentGravity + " for " + planetNames[currentPlanetIndex]);
-        System.out.println("Updated velocity to: " + currentVelocity + " for " + planetNames[currentPlanetIndex]);
     }
 
     public float getViewportWidth() {
         return camera.viewportWidth;
     }
 
-    public float getViewportHeight() {
-        return camera.viewportHeight;
-    }
-
-    public void addGameObject(GameObject gameObject) {
-        gameObjects.add(gameObject);
-    }
+    public float getViewportHeight() {return camera.viewportHeight;}
 
     public float getAirYPosition() {
         return airYPosition;
@@ -266,8 +258,8 @@ public class GameScreen implements Screen {
             texture.dispose();
         }
 
-        for (GameObject gameObject : gameObjects) {
-            gameObject.dispose();
+        for (Entity entity : entities) {
+            entity.dispose();
         }
 //        batch.dispose();
 //        Preferences prefs = Gdx.app.getPreferences("DinoGamePreferences");
