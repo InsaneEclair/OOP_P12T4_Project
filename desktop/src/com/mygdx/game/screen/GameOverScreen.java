@@ -71,6 +71,52 @@ public class GameOverScreen implements Screen {
         // Get the updated high score when showing the screen
         highScore = prefs.getInteger("highScore", 0);
         currentHighScore = prefs.getInteger("highScore", 0);
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            @Override
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                // Convert screen coordinates to world coordinates
+                float worldY = Gdx.graphics.getHeight() - screenY;
+
+                // Check if the touch position is within the bounds of the restart button
+                if ((float) screenX >= imgX && (float) screenX <= imgX + restartTexture.getWidth() &&
+                        worldY >= imgY && worldY <= imgY + restartTexture.getHeight()) {
+                    Gdx.app.log("GameOverScreen", "Restart button touched.");
+                    game.restart();
+                }
+
+                if ((float) screenX >= imgX + 80 && (float) screenX <= imgX + 80 + saveBtnTexture.getWidth() &&
+                        worldY >= imgY && worldY <= imgY + saveBtnTexture.getHeight()) {
+
+                    DataManager.get().saveScore(playerName,dinosaur.getScore());
+                    isScoreSaved = true;
+                }
+
+                // Check if the touch position is within the bounds of the home button
+                if ((float) screenX >= imgX - 80 && (float) screenX <= imgX - 80 + homeTexture.getWidth() &&
+                        worldY >= imgY && worldY <= imgY + homeTexture.getHeight()) {
+                    // Navigate to the StartScreen
+                    game.setScreen(new StartScreen(game, batch));
+                }
+
+                if (GameOverScreen.this.banner != null && (float)screenX >= GameOverScreen.this.banner.getClosePos().x && (float)screenX <= GameOverScreen.this.banner.getClosePos().x + 50.0F && worldY >= GameOverScreen.this.banner.getClosePos().y && worldY <= GameOverScreen.this.banner.getClosePos().y + 50.0F) {
+                    GameOverScreen.this.banner = null;
+                }
+                return true;
+            }
+
+            @Override
+            public boolean keyDown(int keycode) {
+                System.out.println(keycode);
+                if(keycode == 67 && playerName.length() > 0){
+                    playerName = playerName.substring(0,playerName.length()-1);
+                }
+                if(keycode >= 29 && keycode <= 54){
+                    playerName +=  Input.Keys.toString(keycode);
+                }
+                return super.keyDown(keycode);
+            }
+        });
+
     }
 
     @Override
@@ -117,54 +163,7 @@ public class GameOverScreen implements Screen {
             this.banner.draw(this.batch);
         }
 
-        // Set up input processor
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            @Override
-            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                // Convert screen coordinates to world coordinates
-                float worldY = Gdx.graphics.getHeight() - screenY;
 
-                // Check if the touch position is within the bounds of the restart button
-                if ((float) screenX >= imgX && (float) screenX <= imgX + restartTexture.getWidth() &&
-                        worldY >= imgY && worldY <= imgY + restartTexture.getHeight()) {
-                    game.restart();
-                }
-
-                if ((float) screenX >= imgX + 80 && (float) screenX <= imgX + 80 + saveBtnTexture.getWidth() &&
-                        worldY >= imgY && worldY <= imgY + saveBtnTexture.getHeight()) {
-
-                    DataManager.get().saveScore(playerName,dinosaur.getScore());
-                    isScoreSaved = true;
-                }
-
-//                if ((float)screenX >= dinoImgX && (float)screenX <= dinoImgX + (float)GameOverScreen.this.dinoTexture.getWidth() && worldY >= dinoImgY && worldY <= dinoImgY + (float)GameOverScreen.this.dinoTexture.getHeight()) {
-//                    GameOverScreen.this.game.setScreen(new StartScreen(GameOverScreen.this.game, GameOverScreen.this.batch));
-//                }
-                // Check if the touch position is within the bounds of the home button
-                if ((float) screenX >= imgX - 80 && (float) screenX <= imgX - 80 + homeTexture.getWidth() &&
-                        worldY >= imgY && worldY <= imgY + homeTexture.getHeight()) {
-                    // Navigate to the StartScreen
-                    game.setScreen(new StartScreen(game, batch));
-                }
-
-                if (GameOverScreen.this.banner != null && (float)screenX >= GameOverScreen.this.banner.getClosePos().x && (float)screenX <= GameOverScreen.this.banner.getClosePos().x + 50.0F && worldY >= GameOverScreen.this.banner.getClosePos().y && worldY <= GameOverScreen.this.banner.getClosePos().y + 50.0F) {
-                    GameOverScreen.this.banner = null;
-                }
-                return true;
-            }
-
-            @Override
-            public boolean keyDown(int keycode) {
-                System.out.println(keycode);
-                if(keycode == 67 && playerName.length() > 0){
-                    playerName = playerName.substring(0,playerName.length()-1);
-                }
-                if(keycode >= 29 && keycode <= 54){
-                    playerName +=  Input.Keys.toString(keycode);
-                }
-                return super.keyDown(keycode);
-            }
-        });
 
         batch.end();
     }
@@ -189,7 +188,7 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void hide() {
-
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override
@@ -198,5 +197,7 @@ public class GameOverScreen implements Screen {
         dinoTexture.dispose();
         font.dispose();
         restartTexture.dispose();
+        saveBtnTexture.dispose();
+        homeTexture.dispose();
     }
 }

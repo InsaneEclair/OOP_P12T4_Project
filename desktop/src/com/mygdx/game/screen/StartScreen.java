@@ -101,6 +101,7 @@ public class StartScreen implements Screen {
 
             Rectangle highscoresBtnRect = new Rectangle(highScoreBtnX, highScoreBtnY, btnWidth, btnHeight);
             if (highscoresBtnRect.contains(touchPos.x, touchPos.y)) {
+                Gdx.app.log("StartScreen", "Highscores button touched.");
                 //System.out.println("what");
                 game.showHighScores();
             }
