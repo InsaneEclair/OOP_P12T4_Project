@@ -12,7 +12,7 @@ public class AIManager {
     private float timeUntilNextObject;
     private final float minTimeBetweenObjects;
     private final float maxTimeBetweenObjects;
-    float gameObjectSpeed = -150; // Initial speed of GameObjects
+    private float gameObjectSpeed = -150; // Initial speed of GameObjects
     private int lastScoreIncrement = 0; // Keeps track of the last score increment
 
     public enum GameObjectType {

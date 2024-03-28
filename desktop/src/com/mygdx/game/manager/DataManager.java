@@ -13,11 +13,7 @@ public class DataManager {
 
         private static DataManager instance = null;
 
-
-        private DataManager()
-        {
-
-        }
+        private DataManager() {}
 
         public static DataManager get() // singleton class
         {
@@ -29,7 +25,7 @@ public class DataManager {
         public void saveScore(String name,int score){
             try {
                 Writer wr = new FileWriter("score.txt", true);
-                wr.write( name + "," + String.valueOf(score) + "\n");
+                wr.write( name + "," + score + "\n");
                 wr.close();
             }catch (Exception e){
 
@@ -45,7 +41,7 @@ public class DataManager {
                 while (sc.hasNextLine()) {
                     String line = sc.nextLine();
                     String name = line.split(",")[0];
-                    int score = Integer.valueOf(line.split(",")[1]);
+                    int score = Integer.parseInt(line.split(",")[1]);
 
                     scores.add(new PlayerScore(name,score));
                 }

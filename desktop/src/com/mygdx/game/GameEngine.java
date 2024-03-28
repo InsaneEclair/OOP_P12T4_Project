@@ -17,21 +17,6 @@ public class GameEngine extends Game implements InputProcessor{
     private ScreenManager screenManager;
     private SoundManager soundManager;
 
-    // Method to increment the score by a specified amount
-    public void incrementScore(int amount) {
-        dinosaur.setScore(dinosaur.getScore() + amount);
-    }
-
-    // Method to handle back transition from INSTRUCTIONS to START
-    public void backToStart() {
-        if (gameState == GameState.INSTRUCTIONS) {
-            gameState = GameState.START;
-            screenManager.goToState(GameState.START);
-            // Ensure gameStarted is false to allow starting the game
-            gameStarted = false;
-        }
-    }
-
     // InputProcessor methods
     @Override
     public boolean keyDown(int keycode) {
@@ -94,7 +79,6 @@ public class GameEngine extends Game implements InputProcessor{
         RUNNING,
         PAUSED,
         GAME_OVER,
-
         INSTRUCTIONS,
         HIGHSCORES
     }
@@ -116,29 +100,32 @@ public class GameEngine extends Game implements InputProcessor{
     }
 
     public void start() {
-        gameState = GameState.START;
-        // Only allow the game to start if it's currently on the START screen
-        if (gameState == GameState.START) {
-            gameStarted = true;
-            gameState = GameState.RUNNING; // Update gameState to RUNNING
-            screenManager.goToState(GameState.RUNNING);
-            soundManager.stopMenuSound();
-            soundManager.playRoundStartSound();
-        }
+        dinosaur.setScore(0);
+        gameStarted = true;
+        gameState = GameState.RUNNING; // Update gameState to RUNNING
+        screenManager.goToState(GameState.RUNNING);
+        soundManager.stopMenuSound();
+        soundManager.playRoundStartSound();
     }
 
     public void showInstructions() {
-        // Transition to INSTRUCTIONS state only from START state
         gameState = GameState.INSTRUCTIONS;
         screenManager.goToState(GameState.INSTRUCTIONS);
     }
 
+    // Method to handle back transition from INSTRUCTIONS to START
+    public void backToStart() {
+        if (gameState == GameState.INSTRUCTIONS) {
+            gameState = GameState.START;
+            screenManager.goToState(GameState.START);
+            // Ensure gameStarted is false to allow starting the game
+            gameStarted = false;
+        }
+    }
+
     public void showHighScores() {
-        // Transition to INSTRUCTIONS state only from START state
-//        System.out.println("state:" + String.valueOf(gameState));
         dinosaur.setScore(0);
         gameState = GameState.HIGHSCORES;
-        // Make sure this method correctly initializes and sets the HighScores screen
         screenManager.goToState(GameState.HIGHSCORES);
     }
 
@@ -155,18 +142,24 @@ public class GameEngine extends Game implements InputProcessor{
     public void end() {
         screenManager.goToState(GameState.GAME_OVER);
         soundManager.stopRoundStartSound();
+        soundManager.playMenuSound();
     }
 
     public void restart() {
         // reset game variables
+        soundManager.stopMenuSound();
         dinosaur.setScore(0);
         screenManager.goToState(GameState.RUNNING);
         soundManager.playRoundStartSound();
     }
 
+    // Method to increment the score by a specified amount
+    public void incrementScore(int amount) {
+        dinosaur.setScore(dinosaur.getScore() + amount);
+    }
+
     @Override
     public void render() {
-        // Consider checking gameState and handling inputs based on the current state here
         super.render(); // This will render the current screen
     }
 

@@ -10,7 +10,7 @@ public class SoundManager {
     private final Sound deadSound;
     private final Sound starSound;
     private final Mp3.Music menuSound;
-    private final Mp3.Music roundstartSound;
+    private final Mp3.Music roundStartSound;
 
     public SoundManager() {
         jumpSound = Gdx.audio.newSound(Gdx.files.internal("sound/jump1.wav"));
@@ -22,9 +22,9 @@ public class SoundManager {
         menuSound.setLooping(true);
         menuSound.setVolume(0.2f);
 
-        roundstartSound = (Mp3.Music) Gdx.audio.newMusic(Gdx.files.internal("sound/ingamemusic.mp3"));
-        roundstartSound.setLooping(true);
-        roundstartSound.setVolume(0.2f);
+        roundStartSound = (Mp3.Music) Gdx.audio.newMusic(Gdx.files.internal("sound/ingamemusic.mp3"));
+        roundStartSound.setLooping(true);
+        roundStartSound.setVolume(0.2f);
     }
 
     public void playJumpSound() {
@@ -40,22 +40,22 @@ public class SoundManager {
     public void playStarSound() {starSound.play();}
 
     public void playRoundStartSound(){
-        if (!roundstartSound.isPlaying()) {
-            roundstartSound.play();
+        if (!roundStartSound.isPlaying()) {
+            roundStartSound.play();
         }
     }
 
     public void pauseRoundStartSound() {
-        roundstartSound.pause();
+        roundStartSound.pause();
     }
 
     public void resumeRoundStartSound() {
-        roundstartSound.play();
+        roundStartSound.play();
     }
 
     public void stopRoundStartSound () {
-        if (roundstartSound.isPlaying()) {
-            roundstartSound.stop();
+        if (roundStartSound.isPlaying()) {
+            roundStartSound.stop();
         }
     }
 
@@ -76,6 +76,6 @@ public class SoundManager {
         scoreUpSound.dispose();
         starSound.dispose();
         menuSound.dispose();
-        roundstartSound.dispose();
+        roundStartSound.dispose();
     }
 }
