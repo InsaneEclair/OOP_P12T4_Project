@@ -23,7 +23,6 @@ public class StartScreen implements Screen {
     private final FreeTypeFontGenerator generator;
     private final OrthographicCamera camera;
     private final Texture instructionsButtonTexture;
-
     private final Texture highscoresBtnTexture;
 
 

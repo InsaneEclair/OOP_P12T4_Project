@@ -15,12 +15,11 @@ import com.mygdx.game.GameEngine;
 public class InstructionScreen implements Screen {
     private final GameEngine game;
     private final SpriteBatch batch;
-
     private final Texture backgroundTexture;
     private final BitmapFont font;
     private final FreeTypeFontGenerator generator;
-
     private final OrthographicCamera camera;
+
     public InstructionScreen(final GameEngine game, SpriteBatch batch) {
         this.game = game;
         this.batch = batch;

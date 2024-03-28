@@ -29,11 +29,9 @@ public class GameOverScreen implements Screen {
     private int highScore;
     private int currentHighScore;
     private Preferences prefs;
-    Banner banner;
+    private Banner banner;
     private final Texture backgroundTexture;
-
-    String playerName;
-
+    private String playerName;
     boolean isScoreSaved = false;
 
     public GameOverScreen(final GameEngine game, SpriteBatch batch) {
@@ -107,7 +105,7 @@ public class GameOverScreen implements Screen {
             @Override
             public boolean keyDown(int keycode) {
                 System.out.println(keycode);
-                if(keycode == 67 && playerName.length() > 0){
+                if(keycode == 67 && !playerName.isEmpty()){
                     playerName = playerName.substring(0,playerName.length()-1);
                 }
                 if(keycode >= 29 && keycode <= 54){
@@ -143,9 +141,6 @@ public class GameOverScreen implements Screen {
 
         imgX = centerX - (float) restartTexture.getWidth() / 2;
         imgY = centerY - ((float) restartTexture.getHeight() / 2) - 80;
-        final float dinoImgX = centerX - (float)this.dinoTexture.getWidth() / 2.0F;
-        final float dinoImgY = centerY - 120.0F - (float)this.dinoTexture.getHeight() / 2.0F;
-       // batch.draw(dinoTexture, centerX - (float) dinoTexture.getWidth() / 2, centerY - 120 - (float) dinoTexture.getHeight() / 2);
         batch.draw(restartTexture, imgX, imgY);
         float scaleFactor = 1.3f;
         batch.draw(homeTexture, imgX - 80, imgY, homeTexture.getWidth() * scaleFactor, homeTexture.getHeight() * scaleFactor);
@@ -158,7 +153,6 @@ public class GameOverScreen implements Screen {
         font.draw(batch, "Your score: " + dinosaur.getScore(), centerX - 100, centerY + 30);
         font.draw(batch, "High Score: " + currentHighScore, centerX - 110, centerY );
         font.draw(batch, "Enter Your Name: " + playerName, centerX - 130, centerY - 30);
-        //font.draw(batch, "High Score: " + currentHighScore, centerX - 110, centerY - 10);
         if (this.banner != null) {
             this.banner.draw(this.batch);
         }

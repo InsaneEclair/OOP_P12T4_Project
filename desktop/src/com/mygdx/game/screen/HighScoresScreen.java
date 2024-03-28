@@ -14,21 +14,18 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.GameEngine;
 import com.mygdx.game.manager.DataManager;
 
-import java.util.Comparator;
 import java.util.List;
 
 public class HighScoresScreen implements Screen {
     private final GameEngine game;
     private final SpriteBatch batch;
-
     private final Texture backgroundTexture;
     private final BitmapFont font;
     private final FreeTypeFontGenerator generator;
-
     private final OrthographicCamera camera;
+    private final ShapeRenderer shapeRenderer = new ShapeRenderer();
+    private final List<PlayerScore> playerScores;
 
-    ShapeRenderer shapeRenderer = new ShapeRenderer();
-    List<PlayerScore> playerScores;
     public HighScoresScreen(final GameEngine game, SpriteBatch batch) {
         this.game = game;
         this.batch = batch;
@@ -47,12 +44,7 @@ public class HighScoresScreen implements Screen {
         backgroundTexture = new Texture("background/HighScoresBg.png"); // Load the texture
 
         playerScores= DataManager.get().readScores();
-        playerScores.sort(new Comparator<PlayerScore>() {
-            @Override
-            public int compare(PlayerScore o1, PlayerScore o2) {
-                return o2.getScore() - o1.getScore() ;
-            }
-        });
+        playerScores.sort((o1, o2) -> o2.getScore() - o1.getScore());
         System.out.println(playerScores);
 
     }
@@ -82,7 +74,6 @@ public class HighScoresScreen implements Screen {
 
         // Calculate the center for the text
         float centerX = camera.viewportWidth / 2f;
-        float centerY = camera.viewportHeight / 2f;
 
         // Set the scale for the font if needed
         // font.getData().setScale(yourScale);
